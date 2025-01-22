@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_budget_form_inherit" model="ir.ui.view">
+        <field name="name">crossovered.budget.form.inherit</field>
+        <field name="model">budget.budget</field>
+        <field name="inherit_id" ref="base_account_budget.crossovered_budget_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//header" position="inside">
+                <button name="action_view_related_invoices" string="View Related Invoices" type="object" class="oe_stat_button" icon="fa-file-text-o"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

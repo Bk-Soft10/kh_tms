@@ -1,0 +1,324 @@
+<odoo>
+    <template id="custom_invoice_report_template">
+    <t t-name="reports_template_custom.custom_invoice_report_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.internal_layout">
+
+            <!--- script -->
+             <!-- Styling Section -->
+            <style>
+                .invoice-header, .client-info, .invoice-details, .total-section, .payment-terms {
+                    width: 100%;
+                    margin-bottom: 20px;
+                    font-family: 'Arial', sans-serif;
+                }
+                .div-info {
+                     display: flex; align-items: center;
+                }
+                .company-info {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                }
+                .company-logo img {
+                    max-height: 60px;
+                    width: 150px;
+                    height : 150px;
+                    padding-left: 80px;
+
+                }
+                .company-contact {
+                    padding-right: 300px;
+                    text-align: right;
+                    font-size: 12px;
+                }
+                .company-contact p {
+                    margin: 0;
+                    line-height: 1.4;
+                }
+                .company-contact i {
+                    margin-right: 5px;
+                    color: #333;
+                }
+                .client-info p, .invoice-details p {
+                    margin: 0;
+                    font-size: 12px;
+                }
+                .invoice-details {
+                    background-color: #FFFFFF;
+                    padding: 10px;
+                }
+                .invoice-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 12px;
+                }
+                .invoice-table th, .invoice-table td {
+
+                    padding: 8px;
+                    text-align: center;
+                }
+                .invoice-table th {
+                    background-color: #FFFFFF;
+                    color: #000000;
+                }
+                .invoice-table td {
+                    color: #333;
+                }
+                .total-section p, .payment-terms p {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    text-align: right;
+                }
+                .grand-total {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                .payment-terms {
+                    border-top: 1px solid #ddd;
+                    padding-top: 10px;
+                    font-size: 12px;
+                }
+                .hr {
+                    padding: 5px;
+                    border-bottom: 2px solid #000;
+                }
+
+                .invoice-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.to-client {
+    font-size: 12px;
+    line-height: 1.6;
+    width: 40%;
+}
+
+.to-client h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.to-client p {
+    margin: 0;
+}
+
+.invoice-info {
+    width: 55%;
+    text-align: right;
+    font-size: 12px;
+}
+
+.invoice-date table {
+    width: 100%;
+    border-collapse: collapse;
+}
+                .section-date  {
+    padding: 5px;
+    border-bottom: 2px solid #000; /* Black underline for invoice details */
+                text-align: right;
+}
+
+.invoice-date  {
+    padding: 5px;
+    border-bottom: 2px solid #000; /* Black underline for invoice details */
+}
+
+.invoice-date strong {
+    font-size: 13px;
+    color: black;font-family: 'Arial', sans-serif;
+}
+                .th-border-black {
+                 border: 1px solid black; /* Black border */
+                 background-color: #000;
+                 color: white;              /* White text */
+                 text-align: center;        /* Centered text */
+                padding: 8px;
+                width: 50%; /* Left column takes 50% */
+                 text-align: left;
+}
+                  .th-border-gray {
+                 background-color: #f2f2f2;
+                width: 50%; /* Left column takes 50% */
+                 text-align: left;
+
+}
+                .left-column {
+                 width: 50%; /* Left column takes 50% */
+                 text-align: left;
+}
+
+                 .right-column {
+                 width: 50%; /* Right column takes 50% */
+                    text-align: right;
+}
+             .vl {
+   border-left: 6px solid #ffca33; height: 120px; margin-right: 10px;
+}
+
+
+
+
+
+
+            </style>
+
+            <!-- Invoice Header -->
+            <div class="invoice-header">
+                <div class="company-info">
+                    <div class="client-info">
+                        <!-- Company Logo -->
+                                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"  alt="Company Logo"/>
+
+                     </div>
+                    <div class="invoice-details">
+
+                <div class="invoice-date">
+                    <div class="div-info">
+                    <div class="vl"></div>
+
+                       <div>
+                         <p>
+                        <p><strong t-esc="doc.company_id.name" /></p>
+                        <p><i class="fa fa-phone"></i> <span t-esc="doc.company_id.phone" /></p>
+                        <p><i class="fa fa-envelope"></i> <span t-esc="doc.company_id.email" /></p>
+                        <p><i class="fa fa-globe"></i> <span t-esc="doc.company_id.website" /></p>
+                           <hr style="border: 1px solid black;" />
+                        <p><i class="fa fa-map-marker"></i> <span t-esc="doc.company_id.street" />, <span t-esc="doc.company_id.city" />, <span t-esc="doc.company_id.country_id.name" /></p>
+                        </p>
+                       </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+                <div class="company-info">
+            <!-- Client Information -->
+
+            <div class="client-info">
+                <p><strong>To:</strong> </p>
+                <p><span t-esc="doc.partner_id.name" style="font-size: 40px;" /></p>
+
+                <p><strong>P.</strong> <span t-esc="doc.partner_id.phone" /></p>
+                <p><strong>W.</strong> <span t-esc="doc.partner_id.email" /></p>
+                <p><strong>A.</strong> <span t-esc="doc.partner_id.street" />, <span t-esc="doc.partner_id.city" />, <span t-esc="doc.partner_id.zip" />, <span t-esc="doc.partner_id.country_id.name" /></p>
+            </div>
+
+            <!-- Invoice Details -->
+            <div class="invoice-details">
+                <div class="invoice-date">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="th-border-gray"></th>
+                        <th class="th-border-black">Invoice</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="invoice-date">INVOICE DATE</td>
+                    <td class="invoice-date">INVOICE NO : INV/2023/00002</td>
+                </tr>
+                <tr>
+                    <td>01/08/2023</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="invoice-date">DATE ISSUED</td>
+                    <td class="invoice-date">TOTAL DUE</td>
+                 </tr>
+                <tr>
+                    <td>01/08/2023</td>
+                      <td> $48,012.50</td>
+                </tr>
+            </table>
+        </div>
+
+                <!--
+                <p><strong>INVOICE DATE:</strong> <span t-esc="doc.invoice_date" /></p>
+                <p><strong>INVOICE NO:</strong> <span t-esc="doc.name" /></p>
+                <p><strong>DATE ISSUED:</strong> <span t-esc="doc.invoice_date" /></p>
+                <p><strong>TOTAL DUE:</strong> <span t-esc="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></p>
+                -->
+            </div>
+
+                </div>
+                      <hr class="invoice-date"></hr>
+
+            <!-- Invoice Table -->
+            <table class="invoice-table">
+                <thead>
+                    <tr class="invoice-date">
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Taxes</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        <tr class="invoice-date">
+                            <td><span t-esc="line.product_id.display_name" /><br/><small t-esc="line.name" /></td>
+                            <td><span t-esc="line.quantity" /></td>
+                            <td><span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                            <td><span t-esc="line.tax_ids[0].amount" />%</td>
+                            <td><span t-esc="line.price_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+                  <div class="company-info">
+                       <!-- Payment Terms -->
+           <!-- <div class="payment-terms"> -->
+                <div class="client-info">
+                <p><strong>Terms and Condition/Notes:</strong></p>
+                    <p>Please use the following communication for your payment:</p>
+                    <p><span t-esc="doc.name" /></p>
+                <p><strong>Payment Terms:</strong><span t-esc="doc.invoice_payment_term_id.name" /></p>
+                </div>
+                      <div class="client-info"></div>
+
+
+            <!-- Total Section -->
+            <div class="total-section">
+             <table>
+                <tr>
+                    <td class="section-date">Sub-Total:</td>
+                    <td class="section-date"><span t-esc="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                </tr>
+                <tr>
+                    <td class="section-date">Tax Vat:</td>
+                    <td class="section-date"><span t-esc="doc.amount_tax" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                 </tr>
+                <tr>
+                    <td class="section-date">Grand Total:</td>
+                    <td class="section-date"><span t-esc="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                </tr>
+            </table>
+            </div>
+                  </div>
+
+
+        </t>
+    </t>
+</t>
+    </t>
+</template>
+
+
+
+
+
+
+</odoo>

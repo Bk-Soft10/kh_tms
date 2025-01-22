@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    <report
+        id="action_hr_document_report"
+        model="hr.employee.document"
+        string="Employee Document Report"
+        report_type="qweb-pdf"
+        file="oh_employee_documents_expiry.hr_document_report_template"
+        name="oh_employee_documents_expiry.hr_document_report_template"
+    />
+    -->
+
+     <record id="hr_document_report" model="ir.actions.report">
+         <field name="name">Employee Document Report</field>
+         <field name="model">hr.employee.document</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">oh_employee_documents_expiry.hr_document_report_template</field>
+         <field name="report_file">oh_employee_documents_expiry.hr_document_report_template</field>
+         <field name="binding_model_id" ref="model_hr_employee_document"/>
+         <field name="binding_type">report</field>
+     </record>
+
+
+
+
+</odoo>

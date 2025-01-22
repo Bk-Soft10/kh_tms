@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Register payment from several receipts -->
+        <record id="view_tms_payment_from" model="ir.ui.view">
+            <field name="name">tms.register.payments.wizard</field>
+            <field name="model">tms.register.payments</field>
+            <field name="arch" type="xml">
+                <form string="Register Payment">
+                    <field name="partner_id" invisible="1"/>
+                    <field name="type" invisible="1"/>
+                    <field name="source" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="amount" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="journal_id" widget="selection"/>
+                            <field name="amount_currency" attrs="{'readonly': ['|', ('type', '=', 'outbound'), ('source', '=', 2)]}"/>
+                            <field name="payment_branch_id" readonly="1"/>
+                            
+                        </group>
+                        <group>
+                            <field name="date" groups="tms.group_tms_payment_date"/>
+                            <field name="payment_by"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string='Validate' name="create_payments" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_tms_payment_cancel" model="ir.ui.view">
+            <field name="name">TMS Cancel Payment</field>
+            <field name="model">tms.payment.cancel</field>
+            <field name="arch" type="xml">
+                <form string="Cancel Payment">
+                    <group>
+                        <group>
+                            <field name="journal_id" widget="selection"/>
+                            <field name="payment_branch_id" required="1"/>
+                            <field name="note"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="date" required="1"/>
+                            <field name="payment_by"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string='Confirm' name="action_cancel_payment" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+    </data>
+    
+    <record id="view_tms_payment_tree" model="ir.ui.view">
+        <field name="name">tms.payments.tree</field>
+        <field name="model">tms.payments</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Payments" create="0" delete="0" edit="0">
+                <field name="reference" string="#"/>
+                <field name="date"/>
+                <field name="balance" sum="balance"/>
+                <field name="journal_id"/>
+                <field name="payment_branch_id"/>
+                <field name="receipt_branch_id"/>
+                <field name="source"/>
+                <field name="type"/>
+                <field name="create_uid"/>
+                <field name="is_cache"/>
+                <button icon="fa-credit-card" type="object" name="open_source_form"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_tms_payments_filter" model="ir.ui.view">
+        <field name="name">tms.payments.filter</field>
+        <field name="model">tms.payments</field>
+        <field name="arch" type="xml">
+            <search string="Search Payments">
+                <field name="reference" string="Payment No" filter_domain="[('reference','=',self)]"/>
+                <field name="receipt_no" string="Receipt No" filter_domain="[('receipt_no','=',self)]"/>
+                <field name="partner_id" string="Partner" filter_domain="['|', '|', ('partner_id','ilike',self), ('partner_id.ssn','=',self), ('partner_id.mobile','ilike',self)]"/>
+                <field name="create_uid" string="User" filter_domain="['|', ('create_uid','ilike',self), ('create_uid.emp_code','=',self)]"/>
+                <separator/>
+                <filter name="x1" string="Is Cache" domain="[('is_cache','=',True)]"/>
+                <filter name="x2" string="Is None Cache" domain="[('is_cache','=',False)]"/>
+                <filter name="x3" string="Type Receive" domain="[('type','=','inbound')]"/>
+                <filter name="x4" string="Type Refound" domain="[('type','=','outbound')]"/>
+                <separator/>
+                <filter name="x5" string="Type Receipt" domain="[('source','=',1)]"/>
+                <filter name="x6" string="Type Trans" domain="[('source','=',3)]"/>
+                <filter name="x7" string="Type Ground" domain="[('source','=',2)]"/>
+                <separator/>
+                <filter name="x8" string="Payment in 24H" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d') )]"/>
+                <filter name="x9" string="Payment in 7 Daya" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d') )]"/>
+                <filter  string="Payment in 30 Daya" name="r_30_days" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d') )]"/>
+                <separator/>
+                <field name="source"/>
+                <field name="payment_branch_id"/>
+                <field name="receipt_branch_id"/>
+                <field name="is_cache"/>
+                <field name="type"/>
+                <field name="source"/>
+                <field name="batch_payment_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Journal" name="journal_id" context="{'group_by':'journal_id'}"/>
+                    <filter string="Cache" name="is_cache" context="{'group_by':'is_cache'}"/>
+                    <filter string="Type" name="type" context="{'group_by':'type'}"/>
+                    <filter string="Source" name="source" context="{'group_by':'source'}"/>
+                    <filter string="Payment Branch" name="payment_branch_id" context="{'group_by':'payment_branch_id'}"/>
+                    <filter string="Receipt Branch" name="receipt_branch_id" context="{'group_by':'receipt_branch_id'}"/>
+                    <filter string="User" name="create_uid" context="{'group_by':'create_uid'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <record id="action_tms_all_payments" model="ir.actions.act_window">
+        <field name="name">TMS Payments</field>
+        <field name="res_model">tms.payments</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_tms_payment_tree"/>
+        <field name="search_view_id" ref="view_tms_payments_filter"/>
+        <field name="context">{'search_default_r_30_days':'1'}</field>
+    </record>
+    
+    
+    <record id="view_tms_payment_pivot" model="ir.ui.view">
+        <field name="name">tms.payments.pivot</field>
+        <field name="model">tms.payments</field>
+        <field name="arch" type="xml">
+            <pivot string="Payments">
+                <field name="payment_branch_id" type="row"/>
+                <field name="date" type="col"/>
+                <field name="balance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    
+    <record id="view_tms_payment_graph" model="ir.ui.view">
+        <field name="name">tms.payments.graph</field>
+        <field name="model">tms.payments</field>
+        <field name="arch" type="xml">
+            <graph string="Payments">
+                <field name="payment_branch_id" type="row"/>
+                <field name="date" type="col"/>
+                <field name="balance" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <record id="action_tms_payments_pivot" model="ir.actions.act_window">
+        <field name="name">Payments Analysis</field>
+        <field name="res_model">tms.payments</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_tms_payment_pivot"/>
+        <field name="search_view_id" ref="view_tms_payments_filter"/>
+        <field name="context">{'search_default_r_30_days':'1'}</field>
+    </record>
+    
+    <record id="action_tms_payments_graph" model="ir.actions.act_window">
+        <field name="name">Payments Analysis</field>
+        <field name="res_model">tms.payments</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="view_tms_payment_graph"/>
+        <field name="search_view_id" ref="view_tms_payments_filter"/>
+        <field name="context">{'search_default_r_30_days':'1'}</field>
+    </record>
+    
+    
+    <record id="view_tms_payment_edit" model="ir.ui.view">
+        <field name="name">TMS Edit Payment</field>
+        <field name="model">tms.payment.edit</field>
+        <field name="arch" type="xml">
+            <form string="Edit Payment">
+                <group class="nomrh">
+                    <group><field name="journal_id" widget="selection"/></group>
+                    <group><field name="amount"/></group>
+                    <group><field name="payment_branch_id"/></group>
+                </group>
+                <group class="nomrh">
+                    <group><field name="date"/></group>
+                    <group><field name="is_cache"/></group>
+                </group>
+                <group class="nomrh">
+                     <field name="note"/>
+                </group>
+                <footer>
+                    <button string='Confirm' name="action_edit_payment" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+    
+    
+</odoo>

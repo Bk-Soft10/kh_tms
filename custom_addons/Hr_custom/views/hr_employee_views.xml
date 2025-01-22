@@ -1,0 +1,50 @@
+<!-- views/hr_employee_views.xml -->
+<odoo>
+
+
+    <!-- Extend the employee tree view to show visa expiration warning -->
+    <record id="view_hr_employee_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.tree.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="visa_warning_message" decoration-danger="visa_warning_message"  />
+            </tree>
+        </field>
+    </record>
+
+
+
+
+
+    <!-- Add configuration option to set the notify days in settings -->
+    <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                 <div class="app_settings_block" data-string="Custom Excel" string="Custom Excel" data-key="custom_excel_config">
+                    <h2>Visa Expiration Date Notifactions  </h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Upload Excel Sheet</span>
+                                <div class="text-muted">
+                                    Upload an Excel sheet for configuration
+                                </div>
+                                <div class="content-group">
+                                    <field name="notify_days_before_expiry"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

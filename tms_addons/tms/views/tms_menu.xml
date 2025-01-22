@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        
+		<menuitem id="tms_root" name="TMS" web_icon="tms,static/description/icon.png" sequence="11" groups="tms.group_tms_user"/>
+
+		
+		 <menuitem id="menu_tms_dashboard" name="Dashboard" action="action_tms_dashboard_client" parent="tms_root" sequence="9" groups=""/>
+        <menuitem id="menu_tms_dashboard_custom" name="Custom Dashboard" action="action_tms_dashboard_custom" parent="tms_root" sequence="15"/>
+		<!-- ***************** Transport ********************-->
+		<menuitem id="menu_tms_transport" name="Transport" parent="tms_root" sequence="2" groups=""/>
+		
+		<menuitem id="menu_tms_receipt_comp" action="action_tms_receipt_comp" name="Company Receipt" parent="menu_tms_transport" sequence="1" groups=""/>
+		<menuitem id="menu_tms_receipt_indev" action="action_tms_receipt_indev" name="Indevedual Receipt" parent="menu_tms_transport" sequence="2" groups=""/>
+		<menuitem id="menu_tms_receipt_all" action="action_tms_receipt_all" name="All Receipt" parent="menu_tms_transport" sequence="3" groups=""/>
+		<menuitem id="menu_tms_trip" action="action_tms_trip" name="Trips" parent="menu_tms_transport" sequence="4" groups=""/>
+		<menuitem id="menu_tms_all_trip" action="action_tms_all_trip" name="All Trips" parent="menu_tms_transport" sequence="5" groups=""/>
+		<!-- <menuitem id="menu_tms_itrans" action="action_tms_itrans" name="Internal Transport" parent="menu_tms_transport" sequence="6" groups=""/> -->
+		<!-- <menuitem id="menu_tms_all_itrans" action="action_tms_all_itrans" name="All Internal Transport" parent="menu_tms_transport" sequence="7" groups=""/> -->
+		
+		<menuitem id="menu_tms_post_group" name="Batch Post" parent="menu_tms_transport" sequence="8" groups=""/>
+		<menuitem id="menu_tms_batch_receipt_post" action="action_tms_batch_receipt_post" name="Batch Receipts Post" parent="menu_tms_post_group" sequence="9" groups=""/>
+		<menuitem id="menu_tms_batch_receipt_print" action="action_tms_batch_receipt_print" name="Batch Receipts Print" parent="menu_tms_post_group" sequence="10" groups=""/> 
+
+		<!-- *************** ACCOUNTING ******************
+	    <menuitem id="menu_tms_accounting" name="Accounting" parent="tms_root" sequence="3" groups=""/>
+	    
+	    
+	    <menuitem id="menu_tms_payments" name="Payments" parent="menu_tms_accounting" sequence="1" groups=""/>
+	    <menuitem id="menu_tms_payments_patch_receipts" action="action_tms_batch_receipt_payments" name="Batch Payment Receipts" parent="menu_tms_payments" sequence="1" groups=""/>
+	    <menuitem id="menu_tms_all_payments" action="action_tms_all_payments" name="All Payments" parent="menu_tms_payments" sequence="1" groups="tms.group_tms_manager"/>
+	    
+	    
+	    <menuitem id="menu_tms_posts" name="Post" parent="menu_tms_accounting" sequence="2" groups=""/>
+	     -->
+	    
+	    <!-- *************** REPORTS ******************-->
+        <!-- <menuitem id="menu_tms_reports" name="Reports" parent="tms_root" sequence="4" groups=""/>
+	    <menuitem id="menu_tms_jr_branch_receipt" name="Branch Receipt Report" parent="menu_tms_reports" action="action_tms_jr_branch_receipt" sequence="1" groups=""/>
+	    <menuitem id="menu_tms_jr_user_branch_payment" name="Daily Payments Report" parent="menu_tms_reports" action="action_tms_jr_user_branch_payment" sequence="2" groups=""/>
+	    <menuitem id="menu_tms_jr_branch_payments" name="Branch Payments Report" parent="menu_tms_reports" action="action_tms_jr_branch_payments" sequence="3" groups=""/>
+	    <menuitem id="menu_tms_jr_trip_depart" name="Departures Report" parent="menu_tms_reports" action="action_tms_jr_trip_depart" sequence="4" groups=""/>
+	    <menuitem id="menu_tms_jr_partner_receipts" name="Partner Ledger Report" parent="menu_tms_reports" action="action_tms_jr_partner_receipts" sequence="5" groups=""/>
+	    <menuitem id="menu_tms_jr_user_receipts" name="User Receipt Report" parent="menu_tms_reports" action="action_tms_jr_user_receipts" sequence="6" groups=""/>
+	    <menuitem id="menu_tms_jr_internal_trans" name="Internal Transport Report" parent="menu_tms_reports" action="action_tms_jr_internal_trans" sequence="7" groups=""/>
+	    <menuitem id="menu_tms_jr_posted_receipt" action="action_tms_jr_posted_receipt" name="Posted Receipt Report" parent="menu_tms_reports" sequence="8" groups=""/>
+	    <menuitem id="menu_tms_jr_branch_aged_payments" action="action_tms_jr_branch_aged_payments" name="Branch Aged Payments Report" parent="menu_tms_reports" sequence="9" groups=""/>
+	    <menuitem id="menu_tms_jr_shumoose" action="action_tms_jr_shumoose" name="Shumoose Report" parent="menu_tms_reports" sequence="10" groups=""/>
+	    <menuitem id="menu_tms_jr_call_center" action="action_tms_jr_call_center" name="Callcenter Report" parent="menu_tms_reports" sequence="11" groups=""/> -->
+	    <!-- *************** Analitic ******************-->
+	    <!-- <menuitem id="menu_tms_analytic" name="Analysis" parent="tms_root" sequence="5" groups="tms.group_tms_analaytic"/>
+	    <menuitem id="menu_tms_analytic_pivot" name="Pivot" parent="menu_tms_analytic" sequence="1"/>
+	    <menuitem id="menu_tms_payments_pivot" name="Payments Analysis" parent="menu_tms_analytic_pivot" action="action_tms_payments_pivot" sequence="1"/>
+	    <menuitem id="menu_tms_receipt_branch_pivot" name="Receipt Analysis" parent="menu_tms_analytic_pivot" action="action_tms_receipt_branch_pivot" sequence="2"/>
+	    <menuitem id="menu_tms_itrans_branch_pivot" parent="menu_tms_analytic_pivot" action="action_tms_itrans_branch_pivot" sequence="2"/>
+	    <menuitem id="menu_tms_trip_branch_pivot" parent="menu_tms_analytic_pivot" action="action_tms_trip_branch_pivot" sequence="3"/>
+	    
+	    <menuitem id="menu_tms_receipt_pay_branch_pivot" name="Receipt Payment Branch Analysis" parent="menu_tms_analytic_pivot" action="action_tms_receipt_pay_branch_pivot" sequence="4"/>
+	    <menuitem id="menu_tms_receipt_ground_pivot" name="Receipt Ground Analysis" parent="menu_tms_analytic_pivot" action="action_tms_receipt_ground_pivot" sequence="5"/>
+	    <menuitem id="menu_tms_analytic_graph" name="Graph" parent="menu_tms_analytic" sequence="2"/>
+	    <menuitem id="menu_tms_payments_graph" name="Payments Analysis" parent="menu_tms_analytic_graph" action="action_tms_payments_graph" sequence="1"/>
+	    <menuitem id="menu_tms_receipt_branch_graph" name="Receipt Analysis" parent="menu_tms_analytic_graph" action="action_tms_receipt_branch_graph" sequence="2"/>
+        <menuitem id="menu_tms_receipt_pay_branch_graph" name="Receipt Payment Branch Analysis" parent="menu_tms_analytic_graph" action="action_tms_receipt_pay_branch_graph" sequence="3"/>
+        <menuitem id="menu_tms_receipt_ground_graph" name="Receipt Ground Analysis" parent="menu_tms_analytic_graph" action="action_tms_receipt_ground_graph" sequence="4"/> -->
+	    <!-- *************** CONFIGURATION ******************-->
+        <menuitem id="menu_tms_config" name="Configuration" parent="tms_root" sequence="6" groups=""/>
+        <!-- <menuitem id="menu_tms_config_settings" action="action_tms_config_settings" name="Settings" parent="menu_tms_config" sequence="0" groups=""/> -->
+        <menuitem id="menu_tms_move" action="action_tms_move" name="Move" parent="menu_tms_config" sequence="1" groups=""/>
+        <menuitem id="menu_tms_state" action="action_tms_state" name="State" parent="menu_tms_config" sequence="2" groups=""/>
+        <menuitem id="menu_tms_city" action="action_tms_city" name="City" parent="menu_tms_config" sequence="3" groups=""/>
+        <menuitem id="menu_tms_branch" action="action_tms_branch" name="Branch" parent="menu_tms_config" sequence="4" groups=""/>
+        <menuitem id="menu_tms_cbrand" action="action_tms_cbrand" name="Car Brands" parent="menu_tms_config" sequence="5" groups=""/>
+        <menuitem id="menu_tms_car_type" action="action_tms_car_type" name="Car Types" parent="menu_tms_config" sequence="6" groups=""/>
+        <menuitem id="menu_tms_car_state" action="action_tms_car_state" name="Car State" parent="menu_tms_config" sequence="7" groups=""/>
+        <menuitem id="menu_tms_truck" action="action_tms_truck" name="Trucks" parent="menu_tms_config" sequence="8" groups=""/>
+        <menuitem id="menu_tms_truck_type" action="action_tms_truck_type" name="Truck Types" parent="menu_tms_config" sequence="9" groups=""/>
+        <menuitem id="menu_tms_driver_expense_calc" action="action_driver_expense_calc" parent="menu_tms_config" sequence="10" groups=""/>
+        <menuitem id="menu_tms_freight_state" action="action_tms_freight_state" name="Freight State" parent="menu_tms_config" sequence="11" groups=""/>
+        <menuitem id="menu_tms_ground" action="action_tms_ground" name="Grounds" parent="menu_tms_config" sequence="12" groups=""/>	    
+</odoo>

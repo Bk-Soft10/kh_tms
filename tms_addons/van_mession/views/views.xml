@@ -1,0 +1,112 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="van_mession.list">
+      <field name="name">van_mession list</field>
+      <field name="model">van.mession</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="date"/>
+          <field name="user_id"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="van_mession_form">
+      <field name="name">van_mession form</field>
+      <field name="model">van.mession</field>
+      <field name="arch" type="xml">
+        <form>
+        <header>
+              <field name="can_create" column_invisible="True" />
+              <button name="confirm" type="object" string="Confirm Mession" invisible="state != 'new'"/>
+              <button name="finish" type="object" string="Finish Mession" invisible="state != 'in_progress'"/>
+              <button name="create_sale_order" type="object" string="Create Sale Order" invisible="can_create == False"/>
+              <button name="close_mission" type="object" string="Close Mission" invisible="state != 'finish'"/>
+              <field name="state" widget="statusbar"/>
+            </header>
+
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="date"/>
+              <field name="user_id"/>
+
+            </group>
+              <notebook>
+
+             <page string="Lines" name="lines">
+                        <field name="lines">
+                          <tree editable="bottom" limit="200">
+                            <field name="mession_id" column_invisible="True"/>
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                            <field name="sold_qty" readonly="1"/>
+                            <field name="return_qty" readonly="mession_id.state != 'finish'"/>
+                          </tree>
+                        </field>
+                        </page>
+              <page string="Orders" name="lines">
+                        <field name="order_ids">
+                            <tree>
+                              <field name="name" />
+                              <field name="partner_id" />
+                              <field name="amount_total" />
+                            </tree>
+                        </field>
+              </page> 
+              </notebook>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="van_mession.action_window">
+      <field name="name">van_mession window</field>
+      <field name="res_model">van.mession</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="van_mession.action_server">
+      <field name="name">van_mession server</field>
+      <field name="model_id" ref="model_van_mession_van_mession"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="van_mession" id="van_mession.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="van_mession.menu_1" parent="van_mession.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="van_mession.menu_2" parent="van_mession.menu_root"/> -->
+
+    <!-- actions -->
+
+    <menuitem name="List" id="van_mession.menu_1_list" parent="van_mession.menu_1"
+              action="van_mession.action_window"/>
+    <!-- <menuitem name="Server to list" id="van_mession" parent="van_mession.menu_2"
+              action="van_mession.action_server"/> -->
+
+  </data>
+</odoo>

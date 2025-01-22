@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- ***************State**************** -->
+        <record id="view_tms_state_form" model="ir.ui.view">
+            <field name="name">tms.state.form</field>
+            <field name="model">tms.state</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS State">
+                    <sheet string="Trip">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <field colspan="4" mode="tree" name="city_ids">
+                        <tree editable="bottom" string="Details">
+                            <field name="name"/>
+                            
+                        </tree>
+                    </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_state_tree" model="ir.ui.view">
+            <field name="name">tms.state.tree</field>
+            <field name="model">tms.state</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS State">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_state" model="ir.actions.act_window">
+            <field name="name">TMS State</field>
+            <field name="res_model">tms.state</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_state_tree"/>
+        </record>
+        <!-- ********************** City ********************* -->
+        <record id="view_tms_city_form" model="ir.ui.view">
+            <field name="name">tms.city.form</field>
+            <field name="model">tms.city</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS City">
+                    <sheet string="Trip">
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="state_id" string="State"/>
+                            <field name="trip_disabled"/>
+                            <field name="manual_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="branches_lines" string="Branches">
+                            <field colspan="4" mode="tree" name="branch_ids">
+                                <tree editable="bottom" string="Details">
+                                    <field name="code"/>
+                                    <field name="name" string="Branch"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="branch_prices_lines" string="Branch Price List"  invisible="manual_price == True" >
+                            <field colspan="4" mode="tree" name="prices_ids">
+                                <tree editable="bottom" string="Details">
+                                    <field
+                                    domain="[('id', '!=', parent.id)]" name="city_to_id"/>
+                                    <field name="one_way_price"/>
+                                    <field name="two_way_price"/>
+                                    <field name="show_room_price"/>
+                                    <field name="gove_price"/>
+                                    <field name="distance"/>
+                                    <field name="duration"/>
+                                </tree>
+                            </field>
+                            <newline/>
+                            <button name="action_validate_distance" string="Validate City Distance" type="object" class="oe_highlight"/>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_city_tree" model="ir.ui.view">
+            <field name="name">tms.city.tree</field>
+            <field name="model">tms.city</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS City">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="state_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_city" model="ir.actions.act_window">
+            <field name="name">TMS City</field>
+            <field name="res_model">tms.city</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_city_tree"/>
+        </record>
+        <!-- ********************Branch******************** -->
+        <record id="view_tms_branch_form" model="ir.ui.view">
+            <field name="name">tms.branch.form</field>
+            <field name="model">tms.branch</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Branch">
+                    <sheet string="Trip">
+                    <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placholder="Branch Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="city_id"/>
+                            <field name="state_id" force_save="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="branch_info" string="Settings">
+                            <group>
+                                <group>
+                                    <field name="ac_cash_id"/>
+                                    <field name="ac_income_id"/>
+                                    <field name="ac_rece_id"/>
+                                    <field name="ac_expense_id"/>
+                                    <field name="tax_id"/>
+                                </group>
+                                <group>
+                                    <field name="ac_comp_cash_id"/>
+                                    <field name="ac_advance_income_id"/>
+                                    <field name="ac_discount_id"/>
+                                    <field name="zero_tax_to"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="allow_go_back"/>
+                                    <field name="costcenter1_id"/>
+                                    <field name="bank_journal_id"/>
+                                    <field name="commission_rate"/>
+                                    <field name="responsible_id"/>
+                                </group>
+                                <group>
+                                    <field name="show_in_fright"/>
+                                    <field name="costcenter2_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="minimum_target"/>
+                                    <field name="manager_id"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="address"/>
+                            </group>
+                            <group string="Location" colspan="4">
+                                <field name="lat" invisible="1"/>
+                                <field name="lng" invisible="1"/>
+                                <!--widget name="gmap_marker" lat="lat" lng="lng"/-->
+                            </group>
+                        </page>
+                        <page name="branch_dest_lines" string="Branch Destination List">
+                            <field colspan="4" mode="tree" name="branch_dest_ids">
+                                <tree editable="bottom" string="Details">
+                                    <field
+                                    domain="[('id', '!=', parent.id)]" name="branch_to_id"/>
+                                    <field name="duration"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_branch_tree" model="ir.ui.view">
+            <field name="name">tms.branch.tree</field>
+            <field name="model">tms.branch</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Branch">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="city_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_branch" model="ir.actions.act_window">
+            <field name="name">TMS Branch</field>
+            <field name="res_model">tms.branch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_branch_tree"/>
+            <field name="context">{'model':1}</field>
+        </record>
+        <!-- *********************Car Brands**************** -->
+        <record id="view_tms_car_brand_form" model="ir.ui.view">
+            <field name="name">tms.cbrand.form</field>
+            <field name="model">tms.cbrand</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Car Brands">
+                    <sheet string="Trip">
+                    <group>
+                        <group>
+                            <field name="code" placeholder="Code"/>
+                            <field name="name" placeholder="Brand name"/>
+                        </group>
+                    </group>
+                    <field colspan="4" mode="tree" name="model_ids">
+                        <tree editable="bottom" string="Details">
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="car_type_id"/>
+                            <field name="value" string="Value"/>
+                        </tree>
+                    </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_cbrand_tree" model="ir.ui.view">
+            <field name="name">tms.cbrand.tree</field>
+            <field name="model">tms.cbrand</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Car Brand">
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_cbrand" model="ir.actions.act_window">
+            <field name="name">TMS Car Brand</field>
+            <field name="res_model">tms.cbrand</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_cbrand_tree"/>
+        </record>
+        <!-- ********************Car Types****************** -->
+        <record id="view_tms_car_type_tree" model="ir.ui.view">
+            <field name="name">tms.car.type.tree</field>
+            <field name="model">tms.car.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="TMS Car Type">
+                    <field name="name"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_car_type" model="ir.actions.act_window">
+            <field name="name">TMS Car Type</field>
+            <field name="res_model">tms.car.type</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tms_car_type_tree"/>
+        </record>
+        <!-- *********************Truck**************** -->
+        <record id="view_tms_truck_form" model="ir.ui.view">
+            <field name="name">tms.truck.form</field>
+            <field name="model">tms.truck</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Truck">
+                    <sheet string="Trip">
+                    <field name="branch_id" invisible="1"/>
+                    <field name="can_reset_trip" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- <button class="oe_stat_button" icon="fa-truck" type="action" name="%(tms.action_tms_all_trip)d"
+                                context="{'search_default_truck_id': active_id}">
+                            <field name="trips_count" string="Trips Count" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" strion="Reset Trip" icon="fa-check" type="action" name="action_reset_trip" invisible="can_reset_trip == False" /> -->
+                    </div>
+                    <div class="oe_title">
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="asset_id" invisible="company_owned == False" required="company_owned == True" />
+                                <field name="company_owned"/>
+                            </group>
+                        </group>
+                    </div>
+                    <separator colspan="4" string="Seetings"/>
+                    <group>
+                        <group>
+                            <field name="plate_number" widget="plate" class="xx_plate"/>
+                            <field name="tender_asset_id"/>
+                            <field name="truck_type_id"/>
+                            <field name="active_trip_id"/>
+                            <field name="max_cars"/>
+                        </group>
+                        <group>
+                            <field name="driver_id"  context="{'driver': 1}"/>
+                            <field name="costcenter_id"/>
+                            <field name="city_id" readonly="active_trip_id != 'False'" />
+                            <field name="branch_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Location" colspan="4">
+                        <field name="lat" invisible="1"/>
+                        <field name="lng" invisible="1"/>
+                    </group>
+                    
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_truck_tree" model="ir.ui.view">
+            <field name="name">tms.truck.tree</field>
+            <field name="model">tms.truck</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Truck">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="plate_number"/>
+                    <field name="driver_id"/>
+                    <field name="active_trip_id"/>
+                    <field name="company_owned"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_tms_truck_filter" model="ir.ui.view">
+            <field name="name">tms.truck.select</field>
+            <field name="model">tms.truck</field>
+            <field name="arch" type="xml">
+                <search string="Search Move">
+                    <field name="name" string="Truck Code/Name" filter_domain="['|',('code','=',self),('name','ilike',self)]"/>
+                    <field name="plate_number" string="Plate Number" filter_domain="[('plate_number','ilike',self)]"/>
+                    <field name="driver_id" string="Driver" filter_domain="[('driver_id','ilike',self)]"/>
+                    <field name="tender_asset_id" string="Tender" filter_domain="[('tender_asset_id','ilike',self)]"/>
+                    <field name="city_id" string="Branch" filter_domain="[('city_id','ilike',self)]"/>
+                    <field name="branch_id" string="Branch" filter_domain="[('branch_id','ilike',self)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Costcenter" name="branch_id" context="{'group_by':'costcenter_id'}"/>
+                        <filter string="Current Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                        <filter string="Current City" name="city_id" context="{'group_by':'city_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_tms_truck" model="ir.actions.act_window">
+            <field name="name">TMS Truck</field>
+            <field name="res_model">tms.truck</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_truck_tree"/>
+            <field name="search_view_id" ref="view_tms_truck_filter"/>
+        </record>
+        <!-- ********************Truck Type****************** -->
+        <record id="view_tms_truck_type_tree" model="ir.ui.view">
+            <field name="name">tms.truck.type.tree</field>
+            <field name="model">tms.truck.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="TMS Truck Type">
+                    <field name="name"/>
+                    <field name="rate"/>
+                    <field name="capacity"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_truck_type" model="ir.actions.act_window">
+            <field name="name">TMS Truck Type</field>
+            <field name="res_model">tms.truck.type</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tms_truck_type_tree"/>
+        </record>
+        <!-- ********************Driver Expense****************** -->
+        
+         <record id="view_tms_driver_expense_calc_tree" model="ir.ui.view">
+            <field name="name">tms.driver.expense.calc</field>
+            <field name="model">tms.driver.expense.calc</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Driver Expense">
+                    <field name="branch_id"/>
+                    <field name="branch_to_id"/>
+                    <field name="truck_type"/>
+                    <field name="distance"/>
+                    <field name="time"/>
+                    <field name="rate"/>
+                    <field name="expense"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_driver_expense_calc_filter" model="ir.ui.view">
+            <field name="name">tms.driver.expense_calc.filter</field>
+            <field name="model">tms.driver.expense.calc</field>
+            <field name="arch" type="xml">
+                <search string="Search Driver Expense">                    
+                    <field name="branch_id"/>
+                    <field name="branch_to_id"/>
+                    <field name="truck_type"/>
+                    <group expand="0" string="Group By">
+                        <filter string="From Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                        <filter string="To Branch" name="branch_to_id" context="{'group_by':'branch_to_id'}"/>
+                        <filter string="Truck Type" name="pay_branch_id" context="{'group_by':'truck_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_driver_expense_calc" model="ir.actions.act_window">
+            <field name="name">Driver Expense Settings</field>
+            <field name="res_model">tms.driver.expense.calc</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tms_driver_expense_calc_tree"/>
+            <field name="search_view_id" ref="view_tms_driver_expense_calc_filter"/>
+        </record>
+        <!-- *********************Move**************** -->
+        <record id="view_tms_move_form" model="ir.ui.view">
+            <field name="name">tms.move.form</field>
+            <field name="model">tms.move</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Move">
+                    <sheet string="Trip">
+                    <div class="oe_title">
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="is_comp"/>
+                                <field name="is_manual"/>
+                            </group>
+                        </group>
+                    </div>
+                    <separator colspan="4" string="Seetings"/>
+                    <group>
+                        <group>
+                            <field invisible="1" name="id"/>
+                            <field name="branch_id"/>
+                            <field name="padding"/>
+                        </group>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_move_tree" model="ir.ui.view">
+            <field name="name">tms.move.tree</field>
+            <field name="model">tms.move</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Move">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="branch_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_move_filter" model="ir.ui.view">
+            <field name="name">tms.move.select</field>
+            <field name="model">tms.move</field>
+            <field name="arch" type="xml">
+                <search string="Search Move">
+                    <field name="name" string="Move Code/Name" filter_domain="['|', ('code','=',self), ('name','ilike',self)]"/>
+                    <field name="branch_id" string="Branch" filter_domain="[('branch_id','ilike',self)]"/>
+                    <separator/>
+                    <filter name="is_comp" string="Company" domain="[('is_comp','=',True)]"/>
+                    <filter name="xx" string="Personal" domain="[('is_comp','=',False)]"/>
+                    <filter name="is_manual" string="Manual" domain="[('is_manual','=',True)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                        <filter string="Company" name="is_comp" context="{'group_by':'is_comp'}"/>
+                        <filter string="Manual" name="is_manual" context="{'group_by':'is_manual'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_tms_move" model="ir.actions.act_window">
+            <field name="name">TMS Move</field>
+            <field name="res_model">tms.move</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_move_tree"/>
+            <field name="search_view_id" ref="view_tms_move_filter"/>
+        </record>
+        <!-- *********************Ground**************** -->
+        <record id="view_tms_ground_form" model="ir.ui.view">
+            <field name="name">tms.ground.form</field>
+            <field name="model">tms.ground</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Ground">
+                    <sheet string="Trip">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <field colspan="4" mode="tree" name="ground_ids">
+                        <tree editable="bottom" string="Details">
+                            <field name="days"/>
+                            <field name="price"/>
+                        </tree>
+                    </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_ground_tree" model="ir.ui.view">
+            <field name="name">tms.ground.tree</field>
+            <field name="model">tms.ground</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Grounds">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_ground" model="ir.actions.act_window">
+            <field name="name">TMS Grounds</field>
+            <field name="res_model">tms.ground</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_ground_tree"/>
+        </record>
+        <!-- ********************Freight State****************** -->
+        <record id="view_tms_freight_state_tree" model="ir.ui.view">
+            <field name="name">tms.freight.state.tree</field>
+            <field name="model">tms.freight.state</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="TMS Freight State">
+                    <field name="name"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_freight_state" model="ir.actions.act_window">
+            <field name="name">TMS Freight State</field>
+            <field name="res_model">tms.freight.state</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tms_freight_state_tree"/>
+        </record>
+        <!-- ********************Car State****************** -->
+        <record id="view_tms_car_state_tree" model="ir.ui.view">
+            <field name="name">tms.car.state.tree</field>
+            <field name="model">tms.car.state</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="TMS Car State">
+                    <field name="name"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_tms_car_state" model="ir.actions.act_window">
+            <field name="name">TMS Car State</field>
+            <field name="res_model">tms.car.state</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tms_car_state_tree"/>
+        </record>
+    </data>
+</odoo>

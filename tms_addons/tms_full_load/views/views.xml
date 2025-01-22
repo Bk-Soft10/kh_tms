@@ -1,0 +1,137 @@
+<odoo>
+  <data>
+
+    <record id="tms_full_load_form" model="ir.ui.view">
+        <field name="name">Full Load</field>
+        <field name="model">tms.full.load</field>
+        <field name="arch" type="xml">
+            <form string="Full Load">
+                 <header>
+                     <button name="action_print" string="print" type="object"
+                            class="oe_highlight" invisible="state != 'done'"  />
+                     <button name="action_post" string="Post" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"  />
+                     <button name="action_confirm" string="Confirm" type="object"
+                            class="oe_highlight" invisible="state != 'process'"  />
+                     <button name="compute_line_price" string="compute price" type="object"
+                            class="oe_highlight"  invisible="state != 'draft'" />
+                        <field name="state" widget="statusbar" nolabel="1"/>
+                   </header>
+                <sheet>
+
+                    <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" />
+                            </h1>
+
+                        </div>
+                     <group>
+                        <group>
+                            <field name="move_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+                            <field name="city_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+                            <field name="city_to_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+                            <field name="is_comp" invisible="1"/>
+                            <field name="pay_branch_id" invisible="1"/>
+                            <field name="pay_city_id" invisible="1"/>
+                            <field name="shipping_type" readonly="state != 'draft'"/>
+                            <field name="days_to_arrival" readonly="state != 'draft'"/>
+
+                        </group>
+                         <group>
+                             <field name="partner_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+
+                             <field name="branch_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+                            <field name="branch_to_id" options="{'no_open': True,'no_create': True, 'no_create_edit': True}" readonly="state != 'draft'"/>
+                            <field name="order_date" readonly="state != 'draft'"/>
+                            <field name="total_price"/>
+                        </group>
+                     </group>
+                    <notebook>
+                        <page string="Cars">
+                             <field name="line_ids" readonly="state != 'draft'">
+                                 <tree editable="top">
+                                     <field name="order_id" invisible="1"/>
+                                     <field name="receipt_id" invisible="1"/>
+                                     <field name="freight_state"/>
+                                     <field name="model_id"/>
+                                     <field name="brand_id"/>
+                                     <field name="color"/>
+                                     <field name="car_id"/>
+                                     <field name="body_no"/>
+                                     <field name="resv1_name"/>
+                                     <field name="resv1_mobile"/>
+                                     <field name="price" readonly="1"/>
+                                 </tree>
+                             </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+               <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="tms_full_load_list">
+      <field name="name">tms.full.load</field>
+      <field name="model">tms.full.load</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="partner_id"/>
+          <field name="branch_id"/>
+          <field name="branch_to_id"/>
+          <field name="order_date"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+    <record model='ir.ui.view' id='view_partner_form_extended_full_load_id'>
+           <field name="name">view.partner.form.Is.full.load</field>
+           <field name="model">res.partner</field>
+           <field name="inherit_id" ref="base.view_partner_form" />
+           <field name="arch" type="xml">
+
+               <xpath expr="//field[@name='lang']" position="after">
+                   <field name="is_full_load" string="Is Full Load"/>
+               </xpath>
+           </field>
+        </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="tms_full_load_action_window">
+      <field name="name">Full load</field>
+      <field name="res_model">tms.full.load</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="tms_full_load.action_server">
+      <field name="name">tms_full_load server</field>
+      <field name="model_id" ref="model_tms_full_load_tms_full_load"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+
+
+
+    <menuitem name="Full Load" id="tms_full_load_menuitem" parent="tms.menu_tms_transport"
+              action="tms_full_load_action_window" sequence="4" groups="tms_full_load.group_tms_full_load"/>
+
+  </data>
+</odoo>

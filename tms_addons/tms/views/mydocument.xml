@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- 
+decoration-bf - shows the line in BOLD
+
+decoration-it - shows the line in ITALICS
+
+decoration-danger - shows the line in LIGHT RED
+
+decoration-info - shows the line in LIGHT BLUE
+
+decoration-muted - shows the line in LIGHT GRAY
+
+decoration-primary - shows the line in LIGHT PURPLE
+
+decoration-success - shows the line in LIGHT GREEN
+
+decoration-warning - shows the line in LIGHT BROWN
+
+-->
+<record id="unedit_trip_tree" create="false" write="false" delete="false" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="state == 'b'" decoration-info="state == 'r'" decoration-primary="state == 't'" string="Invoice">
+                    <field name="partner_id" groups="base.group_user" string="Customer"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="user_id"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="amount_total_signed" string="Total" sum="Total"/>
+                    <field name="residual_signed" string="Amount Due" sum="Amount Due"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_unedit_trip_tree" model="ir.actions.act_window">
+            <field name="name">Invoices</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="invoice_tree"/>
+            <field name="domain">[('type','in', ['out_invoice', 'out_refund']), ('state', 'not in', ['draft', 'cancel'])]</field>
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="view_account_invoice_filter"/>
+        </record>
+        
+        
+<!-- To hide default button of wizard you need to replace footer of wizard -->
+ <!-- see the example https://stackoverflow.com/questions/41977485/how-to-hide-save-button-on-popup-form -->
+ <!-- 
+ <footer>
+                    <button name="your_test_method" string="My Button" type="object" class="btn-primary"/> 
+                    <button string="Cancel" class="btn-default" special="cancel"/>   
+                </footer>
+ -->
+ 
+
+        <record id="view_hr_payslip_by_employees" model="ir.ui.view">
+            <field name="name">hr_payroll_payslip_employees</field>
+            <field name="model">hr.payslip.employees</field>
+            <field name="arch" type="xml">
+                <form string="Payslips by Employees">
+                    <group>
+                        <label colspan="4" nolabel="1" string="This wizard will generate payslips for all selected employee(s) based on the dates and credit note specified on Payslips Run." />
+                    </group>
+                    <group colspan="4" >
+                        <separator string="Employees" colspan="4"/>
+                        <newline/>
+                        <field name="employee_ids" nolabel="1" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="compute_sheet" string="Generate" type="object" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_hr_payslip_by_employees" model="ir.actions.act_window">
+            <field name="name">Generate Payslips</field>
+            <field name="res_model">hr.payslip.employees</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_hr_payslip_by_employees"/>
+            <field name="target">new</field>
+        </record>
+        
+    <!-- 
+    
+    query = "SELECT res_id FROM ir_model_data WHERE model='ir.ui.view' AND module=%s AND name=%s"
+    self._cr.execute(query, (module, view_ref))
+    view_ref_res = self._cr.fetchone()
+    if view_ref_res:
+        view_id = view_ref_res[0]
+    
+    -->
+    
+    
+    <!--
+    
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        # private implementation of name_search, allows passing a dedicated user
+        # for the name_get part to solve some access rights issues
+        args = list(args or [])
+        # optimize out the default criterion of ``ilike ''`` that matches everything
+        if not self._rec_name:
+            _logger.warning("Cannot execute name_search, no _rec_name defined on %s", self._name)
+        elif not (name == '' and operator == 'ilike'):
+            if len(args) :
+                args = ['&', '|', '|', ['name', operator, name], ['ssn', 'like', name], ['mobile', 'like', name]] + args
+            else:
+                args = ['|', '|', ['name', operator, name], ['ssn', 'like', name], ['mobile', 'like', name]]
+        
+        access_rights_uid = name_get_uid or self._uid
+        ids = self._search(args, limit=limit, access_rights_uid=access_rights_uid)
+        recs = self.browse(ids)
+        _logger.info("_name_search0 args: %s, result: %s", args, ids)   
+        return recs.sudo(access_rights_uid).name_get()  
+    
+     -->
+     
+    <!--
+    
+        insert one2multi
+        
+        if not trip.trip_route_ids or len(trip.trip_route_ids) == 0:
+            trip_route = {
+                'trip_id': trip.id,
+                'sequence': 1,
+                'city_id': trip.city_id.id,
+                'branch_id': trip.branch_id.id,
+                'city_to_id': trip.city_to_id.id,
+                'branch_to_id': trip.branch_to_id.id,
+                'departure_date': trip.departure_date,
+                'expected_arrival': self.expected_arrival,
+                'distance': trip.distance,
+                'duration': trip.duration,                    
+            }
+            
+            #trip_route_ids = self.env['tms.trip.route'].create(trip_route)
+            #trip_route['id'] = trip_route_ids.id
+            _logger.error("Errrrrrrrrrrrrrrr trip_route_ids:%s", trip_route)
+            
+            data['trip_route_ids'] = [(0, 0, trip_route)]
+    
+     --> 
+     
+ </odoo>

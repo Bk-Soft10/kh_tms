@@ -1,0 +1,187 @@
+<odoo>
+    <template id="report_tms_template">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+
+                <div class="page">
+                    <br/>
+                    <br/>
+                    <div class="report_title">
+                        <br/>
+                        <h2>سند شحنة كاملة
+                            <br/>
+                            <strong>
+                                <t t-esc="o.name"/>
+                            </strong>
+                        </h2>
+                    </div>
+                    <table style="width:100%;border:1px #000 solid;margin:4px;">
+                        <tr>
+                            <td colspan="2" style="padding:10px;border-bottom:2px #000 solid;">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>العميل:</td>
+                                        <td width="60%">
+                                            <t t-esc="o.partner_id.name"/>
+                                        </td>
+                                        <td>التأريخ:</td>
+                                        <td>
+                                            <t t-esc="o.order_date"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>جهة التحميل:</td>
+                                        <td>
+                                            <t t-esc="o.city_id.name"/>
+                                        </td>
+                                        <td>نوع الخدمة:</td>
+                                        <td>
+
+                                            <t t-esc="o.move_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>جهة اوصول:</td>
+                                        <td colspan="3">
+                                            <t t-esc="o.city_to_id.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+<!--                        <tr>-->
+<!--                            <td colspan="2" style="padding:10px;border-bottom:2px #000 solid;">-->
+<!--                                <table style="width:100%;">-->
+<!--                                    <tr>-->
+<!--                                        <td>السعر :</td>-->
+<!--                                        <td>-->
+<!--                                            <t t-esc="o.total_price"/>-->
+<!--                                        </td>-->
+<!--                                        <td>عدد الايام :</td>-->
+<!--                                        <td>-->
+<!--                                            <t t-esc="o.days_to_arrival"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+
+<!--                                </table>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                    </table>
+
+                    <div style="height:15px"></div>
+                    <table style="width:100%;border:1px solid black;padding:2px;font-size:0.8rem;"
+                           class="table table-sm o_main_table">
+                        <thead>
+                            <tr class="text-center">
+                                <th>
+                                    <span>م</span>
+                                </th>
+                                <th>
+                                    <span>نوع السيارة</span>
+                                </th>
+                                <th>
+                                    <span>الموديل</span>
+                                </th>
+                                <th>
+                                    <span>اللون</span>
+                                </th>
+                                <th>
+                                    <span>رقم اللوحة / الهيكل</span>
+                                </th>
+                                <th>
+                                    <span>من</span>
+                                </th>
+                                <th>
+                                    <span>الي</span>
+                                </th>
+                                <th>
+                                    <span>المستلم</span>
+                                </th>
+                                <th>
+                                    <span>جوال المستلم</span>
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <t t-foreach="o.line_ids" t-as="r">
+
+                                <tr class="text-center">
+                                    <t t-set="counter" t-value="1"/>
+                                    <td>
+                                        <span t-esc="counter"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.model_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.brand_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.color"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.car_id"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="o.branch_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.branch_to_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.resv1_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.resv1_mobile"/>
+                                    </td>
+                                </tr>
+                                <t t-set="counter" t-value="counter + 1"/>
+
+                            </t>
+                        </tbody>
+
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="width:100%">
+                        <tr>
+                            <td></td>
+                            <td width="50%">
+                                <h2>توقيع الموظف :</h2>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div style="height:30px;"></div>
+                </div>
+            </t>
+        </t>
+
+    </template>
+
+    <template id="report_tms_load_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="tms_full_load.report_tms_template" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+
+    <report
+            id="account_invoice_report_total"
+            model="tms.full.load"
+            string="Full Load print"
+            report_type="qweb-pdf"
+            name="tms_full_load.report_tms_load_report"
+            file="tms_full_load.report_tms_load_report"
+            attachment="(object.state in ('done')) and ('INV'+(object.name or '').replace('/','')+'.pdf')"
+            menu ="False"
+    />
+
+</odoo>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Custom Invoice PDF Report Action -->
+    <record id="action_Radioactive_invoice_report" model="ir.actions.report">
+        <field name="name">  Radioactive Generation LLC - Invoice </field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.Radioactive_template</field>
+        <field name="report_file">Report_custom.Radioactive_template</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+       <record id="action_West_invoice_report" model="ir.actions.report">
+        <field name="name">West Cost LLC - Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.west_cost_template</field>
+        <field name="report_file">Report_custom.west_cost_template</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+
+    <!-- Tax ByatCorp Invoice PDF Report Action -->
+    <record id="action_custom_tax_invoice_byatcorp" model="ir.actions.report">
+        <field name="name">Byat Corp LLC - Invoice </field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.custom_Tex_invoice_byatcrop</field>
+        <field name="report_file">Report_custom.custom_Tex_invoice_byatcrop</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <record id="report_saleorder_document" model="ir.actions.report">
+        <field name="name">Sales Quotation  </field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.custom_quotation_template</field>
+        <field name="report_file">Report_custom.custom_quotation_template</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+     <record id="report_purchase_order_document" model="ir.actions.report">
+        <field name="name">purchase order (PO)</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.purchase_order_template</field>
+        <field name="report_file">Report_custom.purchase_order_template</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+     <record id="report_quotation_purchase_order_document" model="ir.actions.report">
+        <field name="name"> Quotation Purchase Orders (RFQ) </field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Report_custom.quotation_purchase_order_template</field>
+        <field name="report_file">Report_custom.quotation_purchase_order_template</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+
+
+</odoo>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_tms_batch_payment_from" model="ir.ui.view">
+            <field name="name">tms.batch.payment.form</field>
+            <field name="model">tms.batch.payment</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Batch Payments">
+                    <field name="state" invisible="1"/>
+                    <field name="branch_id" invisible="1"/>
+                    <header>
+                        <button name="action_post" string="Validate" type="object" class="oe_highlight" attrs="{'invisible':[('state','=','p')]}" />
+                        <button name="cancel_payments" string="Cancel" type="object" class="oe_highlight" groups="tms.group_tms_admin" attrs="{'invisible':[('state','=','d')]}" />
+                        <button name="action_recompute" string="Recompute" type="object" class="oe_highlight" attrs="{'invisible':[('state','=','p')]}" />
+                        <field name="state" nolabel="1" statusbar_visible="d,o,p" widget="statusbar"/>
+                    </header>
+                    <sheet string="Batch Post">
+                        <group class="nomrh">
+                            <group>
+                                <field name="partner_id" options="{'no_create': true, 'no_open': true}"/>
+                            </group>
+                            <group>
+                                <field name="move_id"/>
+                            </group>
+                        </group>
+                        <group class="nomrh">
+                            <group>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="journal_id" widget="selection"/>
+                            </group>
+                        </group>
+                        <group class="nomrh">
+                            <group>
+                                <field name="use_contract"/>
+                                <field name="note"/>
+                            </group>
+                            <group>
+                                <field name="contract_no"/>
+                                <field name="is_comp"/>
+                            </group>
+                        </group>
+                        <group class="nomrh">
+                            <group>
+                                <field name="date" required="1"/>
+                            </group>
+                            <group>
+                                <field name="month"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="receipt_id" string="Receipt" placeholder="Enter barcode or the receipt number" widget="barcode"
+                             attrs="{'invisible': ['|', ('state', '=', 'o'), ('state', '=', 'p')], 'readonly': [('state','=','p')]}"/>
+                        </group>
+                         
+                        <notebook>
+                            <page string="Receipts">
+                                <group>
+                                    <div class="oe_edit_only">
+                                        <button name="action_down_receipts" type="object" string="(Down The Receipts)" class="oe_link" attrs="{'invisible': ['|', ('state', '=', 'o'), ('state', '=', 'p')]}"/>
+                                    </div>
+                                </group>
+                                <!-- <group> -->
+                                    <div>
+                                        <field name="payment_line_ids" nolable="1" options="{'no_open': true}">
+                                            <tree editable="bottom" create="0">
+                                                <field name="receipt_id" invisible="1"/>
+                                                <field name="trans_id"  invisible="1"/>
+                                                <button  icon="fa-credit-card" name="open_source_form" type="object"/>
+                                                <field name="receipt_no"/>
+                                                <field name="car_id"/>
+                                                <field name="car_model"/>
+                                                <field name="source_type"/>
+                                                <field name="date"/>
+                                                <field name="amount_total"/>
+                                                <field name="residual"/>
+                                                <field name="amount" sum="Total" attrs="{'readonly': [('residual', '=', 0)]}"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                <!-- </group> -->
+                                
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_total"/>
+                                    <field name="payment_total"/>
+                                    <field name="residual" class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                            <page string="Payments">
+                                <group>
+                                    <div>
+                                        <field name="batch_payment_history_ids" nolable="1" options="{'no_open': true}">
+                                            <tree editable="bottom" create="0">
+                                                <field name="batch_reference"/>
+                                                <field name="amount"/>
+                                                <field name="journal_id"/>
+                                                <field name="date"/>
+                                                <field name="note"/>
+                                                <button icon="fa-credit-card" type="action" name="%(tms.action_tms_all_payments)d" context="{'search_default_batch_reference': batch_reference}"></button>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                </group>
+                            </page>
+                            <page string="Past All">
+                                <group> 
+                                    <field name="all_receipt"/>
+                                </group>
+                            </page>
+                        </notebook>
+                   </sheet>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_tms_batch_payment_tree" model="ir.ui.view">
+            <field name="model">tms.batch.payment</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Batch Payment">
+                    <field name="batch_no"/>
+                    <field name="partner_id"/>
+                    <field name="branch_id"/>
+                    <field name="contract_no"/>
+                    <field name="journal_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_tms_batch_receipt_payments" model="ir.actions.act_window">
+            <field name="name">Batch Payment</field>
+            <field name="res_model">tms.batch.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'current': True}</field>
+            <field name="view_id" ref="view_tms_batch_payment_tree"/>
+        </record>
+</odoo>

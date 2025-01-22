@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+        <li t-name="tms.SwitchBranchWidget1" class="o_mail_navbar_item">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="oe_topbar_name">
+                    <t t-esc="widget.current_branch_name"/>
+                </span>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <t t-foreach="widget.branches" t-as="branch">
+                    <li>
+                        <a class="tms_branch_item"
+                           href="#"
+                           t-att-data-branch-id="branch.id">
+                            <t t-esc="branch.name"/>
+                        </a>
+                    </li>
+                </t>
+            </ul>
+        </li>        
+
+    
+
+</templates>

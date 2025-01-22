@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_tms_jr_branch_receipt" model="ir.ui.view">
+            <field name="name">Branch Receipt Report</field>
+            <field name="model">tms.jr.branch.receipt</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group class="nomrh">
+                        <group><field name="branch_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        <group><field name="branch_to_id" options="{'no_create': true, 'no_open': true}"/></group>
+                    </group>
+                    <group class="nomrh">
+                        <group><field name="date_from"/></group>
+                        <group><field name="date_to"/></group>
+                    </group>
+                    <footer>
+                        <button name="action_show_report" string="Print" type="object" default_focus="1" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_tms_jr_branch_receipt_sub" model="ir.ui.view">
+            <field name="name">Branch Receipt Report Sub</field>
+            <field name="model">tms.jr.branch.receipt</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//footer" position="before">
+                         <group class="nomrh">
+                            <group><field name="ptype" string="Client Type" widget="radio" options="{'horizontal': true}"/></group>
+                        </group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+
+        <record id="action_tms_jr_branch_receipt" model="ir.actions.act_window">
+            <field name="name">Branch Receipt Report</field>
+            <field name="res_model">tms.jr.branch.receipt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_branch_receipt_sub"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="view_tms_jr_user_branch_payment" model="ir.ui.view">
+            <field name="name">User Branch Payment Report</field>
+            <field name="model">tms.jr.user.branch.payment</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='branch_to_id']" position="replace">
+                        <field name="user_id" options="{'no_create': true, 'no_open': true}"/>
+                    </xpath>
+                    <group class="nomrh">
+                        <group><field name="type" widget="radio" options="{'horizontal': true}"/></group>
+                        <group><field name="journal_id" widget="selection"/></group>
+                    </group>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_user_branch_payment" model="ir.actions.act_window">
+            <field name="name">User Branch Payment Report</field>
+            <field name="res_model">tms.jr.user.branch.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_user_branch_payment"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="view_tms_jr_branch_payments" model="ir.ui.view">
+            <field name="name">Branch Payments Report</field>
+            <field name="model">tms.jr.branch.payments</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='branch_to_id']" position="replace">
+                        <field name="user_id" options="{'no_create': true, 'no_open': true}"/>
+                    </xpath>
+                    <group class="nomrh">
+                        <group><field name="type" widget="radio" options="{'horizontal': true}"/></group>
+                        <group><field name="journal_id" widget="selection"/></group>
+                    </group>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_branch_payments" model="ir.actions.act_window">
+            <field name="name">Branch Payments Report</field>
+            <field name="res_model">tms.jr.branch.payments</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_branch_payments"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="view_tms_jr_trip_depart_2" model="ir.ui.view">
+            <field name="name">Trip Departure Report</field>
+            <field name="model">tms.jr.trip.depart</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group class="nomrh">
+                        <group><field name="branch_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        <group><field name="branch_to_id" options="{'no_create': true, 'no_open': true}"/></group>
+                    </group>
+                    <group class="nomrh">
+                        <group><field name="date_from"/></group>
+                        <group><field name="date_to"/></group>
+                    </group>
+                    <group class="nomrh">
+                        <group><field name="tm1"/></group>
+                        <group><field name="tm2"/></group>
+                    </group>
+                     <group class="nomrh">
+                        <group><field name="driver_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        <group><field name="vehicle_id" options="{'no_create': true, 'no_open': true}"/></group>
+                    </group> 
+                    <footer>
+                        <button name="action_show_report" string="Print" type="object" default_focus="1" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_trip_depart" model="ir.actions.act_window">
+            <field name="name">Trip Departure Report</field>
+            <field name="res_model">tms.jr.trip.depart</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_trip_depart_2"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="view_tms_jr_partner_receipts" model="ir.ui.view">
+            <field name="name">Partner Receipts Report</field>
+            <field name="model">tms.jr.partner.receipts</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//footer" position="before">
+                        <group class="nomrh">
+                            <group><field name="partner_id" options="{'no_create': true, 'no_open': true}"/></group>
+                            <group><field name="ptype" string="Client Type" widget="radio" options="{'horizontal': true}"/></group>
+                        </group>
+                        <group class="nomrh">
+                            <group><field name="type" widget="radio" options="{'horizontal': true}"/></group>
+                        </group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_partner_receipts" model="ir.actions.act_window">
+            <field name="name">Partner Receipts Report</field>
+            <field name="res_model">tms.jr.partner.receipts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_partner_receipts"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="view_tms_jr_user_receipts" model="ir.ui.view">
+            <field name="name">User Receipts Report</field>
+            <field name="model">tms.jr.user.receipts</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//footer" position="before">
+                        <group class="nomrh">
+                            <group><field name="user_id" options="{'no_create': true, 'no_open': true}"/></group>
+                            <group><field name="type" widget="radio" options="{'horizontal': true}"/></group>
+                        </group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_user_receipts" model="ir.actions.act_window">
+            <field name="name">User Receipts Report</field>
+            <field name="res_model">tms.jr.user.receipts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_user_receipts"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="view_tms_jr_internal_trans" model="ir.ui.view">
+            <field name="name">Internal Transport Report</field>
+            <field name="model">tms.jr.itrans</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//footer" position="before">
+                        <group class="nomrh">
+                            <group><field name="driver_id" options="{'no_create': true, 'no_open': true}"/></group>
+                            <group><field name="vehicle_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        </group>
+                        <group class="nomrh">
+                            <group><field name="partner_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        </group>
+                   </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_internal_trans" model="ir.actions.act_window">
+            <field name="name">Internal Transport Report</field>
+            <field name="res_model">tms.jr.itrans</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_internal_trans"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="view_tms_jr_internal_trans2" model="ir.ui.view">
+            <field name="name">Company Internal Transport Report</field>
+            <field name="model">tms.jr.itrans2</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//footer" position="before">
+                        <group class="nomrh">
+                            <group><field name="partner_id" options="{'no_create': true, 'no_open': true}"/></group>
+                            <group><field name="driver_id" options="{'no_create': true, 'no_open': true}"/></group>
+                        </group>
+                   </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_internal_trans2" model="ir.actions.act_window">
+            <field name="name">Company Internal Transport Report</field>
+            <field name="res_model">tms.jr.itrans2</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_internal_trans2"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="view_tms_jr_posted_receipt" model="ir.ui.view">
+            <field name="name">Posted Receipt Report</field>
+            <field name="model">tms.jr.posted.receipt</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='branch_to_id']" position="replace">
+                        <group><field name="user_id" options="{'no_create': true, 'no_open': true}"/></group>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_posted_receipt" model="ir.actions.act_window">
+            <field name="name">Posted Receipt Report</field>
+            <field name="res_model">tms.jr.posted.receipt</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_posted_receipt"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+        <record id="view_tms_jr_shumoose" model="ir.ui.view">
+            <field name="name">Shumoose Report</field>
+            <field name="model">tms.jr.shumoose</field>
+            <field name="inherit_id" ref="view_tms_jr_branch_receipt"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='branch_id']" position="replace">
+                    </xpath>
+                    <xpath expr="//field[@name='branch_to_id']" position="replace">
+                    </xpath>
+                    <footer position="before">
+                        <group class="nomrh">
+                            <group><field name="tm1"/></group>
+                            <group><field name="tm2"/></group>
+                        </group>
+                    </footer>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_shumoose" model="ir.actions.act_window">
+            <field name="name">Shumoose Report</field>
+            <field name="res_model">tms.jr.shumoose</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_shumoose"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="view_tms_jr_branch_aged_payments" model="ir.ui.view">
+            <field name="name">Branch Aged Payments Report</field>
+            <field name="model">tms.jr.branch.aged.payments</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group class="nomrh">
+                        <group><field name="branch_id" string="Payment Branch" options="{'no_create': true, 'no_open': true}"/></group>
+                        <group><field name="branch_to_id" string="Receipt Branch" options="{'no_create': true, 'no_open': true}"/></group>  
+                    </group>
+                    <group class="nomrh">
+                        <group><field name="date_from"/></group>
+                        <group><field name="date_to"/></group>
+                    </group>
+                    <group class="nomrh">
+                        <group><field name="state"/></group>
+                        <group><field name="type" widget="radio" options="{'horizontal': true}"/></group>
+                    </group>
+                    <footer>
+                        <button name="action_show_report" string="Print" type="object" default_focus="1" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+        <record id="action_tms_jr_branch_aged_payments" model="ir.actions.act_window">
+            <field name="name">Branch Aged Payments Report</field>
+            <field name="res_model">tms.jr.branch.aged.payments</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_branch_aged_payments"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="action_tms_jr_call_center" model="ir.actions.act_window">
+            <field name="name">Callcenter Report</field>
+            <field name="res_model">tms.jr.callcenter</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_jr_branch_receipt_sub"/>
+            <field name="target">new</field>
+            <field name="binding_type">report</field>
+        </record>
+        
+        
+</odoo>
+        

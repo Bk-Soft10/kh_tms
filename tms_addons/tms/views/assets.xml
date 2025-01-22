@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="assets_backend" name="stock tms mask ext" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- <script type="text/javascript" src="/tms/static/lib/jquery.inputmask/jquery.inputmask.bundle.js"></script>
+            <script type="text/javascript" src="/tms/static/src/js/switch_branch.js"></script>
+            <script type="text/javascript" src="/tms/static/src/js/widgets.js"></script>
+            <script type="text/javascript" src="/tms/static/src/js/dashboard.js"></script> -->
+			<link  rel="stylesheet" href="/tms/static/src/css/style.css"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_employee_form_inherit_custom_fields" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.custom.fields</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//sheet/notebook" position="inside">
+                <page string="Additional Info">
+                    <group col="2">
+                    <group string =" Bank and Iqama information">
+                    <field name="iban_number"/>
+                    <field name="bank_name"/>
+                    <field name="residence_number"/>
+                    <field name="residence_expiry_date"/>
+                    </group>
+                    <group string ="information">
+                    <field name="hs_no"/>
+                    <field name="border_number"/>
+                    <field name="hanger_station_mobile"/>
+                    <field name="fuel_card"/>
+                    </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend the form view of fleet.vehicle
+        <record id="view_fleet_vehicle_form_inherited" model="ir.ui.view">
+            <field name="name">fleet.vehicle.form.inherited</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <field name="tag_ids" position="after">
+                    <group string="custom Filed">
+                        <field name="insurance_expiry_date"/>
+                        <field name="inspection_expiry_date"/>
+                        <field name="registration_expiry_date"/>
+                        <field name="current_vehicle_value"/>
+                        <field name="purchase_value"/>
+                        <field name="owner_id"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+        -->
+    </data>
+</odoo>

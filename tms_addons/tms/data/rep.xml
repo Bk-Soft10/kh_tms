@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Report Definition -->
+        <!-- <report
+            id="report_car_policy"
+            string="car_policy"
+            model="tms.receipt"
+            report_type="qweb-pdf"
+            name="tms.report_car_policy_"
+            file="tms.report_car_policy_"
+        /> -->
+        <record id="action_report_car_policy" model="ir.actions.report">
+            <field name="name">car_policy</field>
+            <field name="model">tms.receipt</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">tms.report_car_policy_</field>
+            <field name="report_file">tms.report_car_policy_</field>
+            <!-- <field name="print_report_name">(object._get_report_base_filename())</field> -->
+            <field name="attachment"/>
+            <field name="binding_model_id" ref="model_tms_receipt"/>
+            <field name="binding_type">report</field>
+            <!-- <field name="groups_id" eval="[(4, ref('account.group_account_invoice')),
+ (4, ref('account.group_account_readonly'))]"/> -->
+        </record>
+
+        <!-- Report Template -->
+        <template id="report_car_policy_">
+            <t t-call="web.html_container">
+                 <t t-foreach="docs" t-as="car_policy">
+                    <t t-call="web.basic_layout">
+                         <div class="page" dir="rtl">
+                    <!--       <div style="float:left;width:47%">-->
+                        
+                    <!--    <div class="pull-right mb16" style="width:300px;text-align:center;">-->
+                    <!--        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', car_policy.receipt_no, 600, 100)" style="width:300px;height:50px"/>-->
+                    <!--        <div style="margin-top:-4px;"><t t-esc="car_policy.receipt_no"/></div>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                            <div class="content">
+                                <br/><br/><br/><br/>
+                                <div class="row">
+                                    <div class="col-3">
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.partner_id.name"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-field="car_policy.name"/>
+                                    </div>
+                                    <div class="col-3">
+                                        <span t-field="car_policy.receipt_date"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-field="car_policy.branch_id.name"/> - <span t-field="car_policy.branch_to_id.name"/>
+                                    </div>
+                                    <div class="col-3">
+                                        <span t-field="car_policy.base_price"/>
+                                    </div>
+                                </div>
+                                <br/><br/><br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-field="car_policy.pay_branch_id.name"/>
+                                    </div>
+                                    <div class="col-3">
+                                        
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                        <t t-if="car_policy.go_receipt_id"> <strong> عودة</strong></t>
+                                        <t t-if="not car_policy.go_receipt_id"> <strong>ذهاب </strong></t>
+                                    </div>
+                                    <div class="col-3">
+                                       <span t-field="car_policy.amount_tax"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                        <!--<t t-if="car_policy.go_receipt_id"> <strong> عودة</strong></t>-->
+                                        <!--<t t-if="not car_policy.go_receipt_id"> <strong>ذهاب </strong></t>-->
+                                    </div>
+                                    <div class="col-3">
+                                       <span t-field="car_policy.amount_total"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-1">
+                                        المسدد 
+                                    </div>
+                                    <div class="col-1">
+                                        ,<t t-set="paid" t-value="car_policy.amount_total - car_policy.residual"/>
+                                       <span t-esc="paid"/>
+                                    </div>
+                                    <div class="col-1">
+                                        المتبقي 
+                                    </div>
+                                    <div class="col-1">
+                                        ,<t t-set="due" t-value="car_policy.amount_total - paid "/>
+                                       <span t-esc="due"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-5">
+                                       <span t-field="car_policy.create_uid.name"/>
+                                    </div>
+                                    <div class="col-3">
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <div class="row">
+                                    <div class="col-7">
+                                    </div>
+                                    <div class="col-2">
+                                       <span t-field="car_policy.color"/>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="car_policy.model_id.name"/>
+                                    </div>
+                                </div>
+                                
+                                <br/>
+                                <div class="row">
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="car_policy.car_id"/>
+                                    </div>
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="car_policy.body_no"/>
+                                    </div>
+                                    <div class="col-2">
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-field="car_policy.brand_id.name"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-3">
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.partner_id.name"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.sender_mobile"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.partner_id.ssn"/>
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <div class="row">
+                                    <div class="col-3">
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.resv1_name"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-4">
+                                        <span t-field="car_policy.resv1_mobile"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <!--<span t-field="car_policy.partner_id.ssn"/>-->
+                                    </div>
+                                </div>
+                                    
+                            <!--<div width="90%" height="40%">-->
+                            <!--    <img t-att-src="'data:image/png;base64,%s' % car_policy.model_id.car_type_id.img"/>-->
+                            <!--    <span t-field="car_policy.model_id.car_type_id.img" t-options-widget="image" t-options-width="64px"/>-->
+                            <!--</div>-->
+            
+                            <!-- Report Footer -->
+                            <div class="footer">
+                                <p>Generated by: <span t-field="car_policy.create_uid.name"/></p>
+                            </div>
+                        </div></div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_trip" model="ir.actions.report">
+            <field name="name">trip</field>
+            <field name="model">tms.trip</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">tms.report_trip</field>
+            <field name="report_file">tms.report_trip</field>
+            <field name="attachment"/>
+            <field name="binding_model_id" ref="model_tms_receipt"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_trip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="car_policy">
+                    <t t-call="web.external_layout">
+                        <div class="page" dir="rtl">
+                            <!-- Report Header -->
+                            
+                            <!-- Car Details -->
+                            <div class="content center">
+                                <h2>بيان ترحيل</h2>
+                                <strong>بيان ترحيل بالرحلة رقم :</strong> <span t-field="car_policy.trip_no"/>
+                               <strong>من فرع :</strong> <span t-field="car_policy.branch_id.name"/>
+                               <strong>الى فرع :</strong> <span t-field="car_policy.branch_to_id.name"/>
+                               <strong>بقيادة السائق  :</strong> <span t-field="car_policy.driver.name"/>
+                               <strong> المتجهة بخط سير :   :</strong> <span t-field="car_policy.city_id.name"/> - <span t-field="car_policy.city_to_id.name"/> 
+                               <strong>بواسطة الناقلة  :</strong> <span t-field="car_policy.truck_id.name"/> <span t-field="car_policy.truck_id.plate_number"/>  
+                               <br/>
+                               <br/>
+
+                            </div>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <td>
+                                            م
+                                        </td>
+                                        <td>
+                                            إسم موصل السيارة
+                                        </td>
+                                        <td>
+                                            رقم اللوحة
+                                        </td>
+                                        <td>
+                                            نوع السيارة
+                                        </td>
+                                        <td>
+                                            الموديل
+                                        </td>
+                                        <td>
+                                            اللون
+                                        </td>
+                                        <td>
+                                            اسم مستلم السيارة
+                                        </td>
+                                        <td>
+                                            جهة الوصول
+                                        </td>
+                                        <td>
+                                            رقم السند
+                                        </td>
+                                        <td>    
+                                            اجمالي المدفوغ
+                                        </td>
+                                        <td>
+                                            القيمة المؤجلة
+                                        </td>
+                                        <td>
+                                            فرع السداد
+                                        </td>
+                                    </thead>
+                                    <tbody>
+                                    <t t-set="count" t-value="0"/>
+
+                                      <t t-foreach="car_policy.receipt_ids" t-as="line">
+                                          <tr>
+                                          <t t-set="count" t-value="count +1"/>
+                                          <td>
+                                            <span t-esc="count"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.partner_id.name"/>
+                                            <span t-esc="line.c_partner_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.car_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.brand_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.model_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.color"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.resv1_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.city_to_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.name"/>
+                                        </td>
+                                        <td>    
+                                           0
+                                        </td>
+                                        <td>
+                                           0
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.pay_branch_id.name"/>
+                                        </td>
+                                        </tr>
+                                      </t>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Report Footer -->
+                            <div class="footer">
+                                <p>Generated by: <span t-field="car_policy.create_uid.name"/></p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

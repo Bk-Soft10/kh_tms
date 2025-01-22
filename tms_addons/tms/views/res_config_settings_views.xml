@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.tms</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="TMS" data-key="tms" groups="">
+                    <h2>Accounting Settings</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="income_account_id"/>
+                                <div class="row">
+                                    <field name="income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="trade_income_account_id"/>
+                                <div class="row">
+                                    <field name="trade_income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="fair_income_account_id"/>
+                                <div class="row">
+                                    <field name="fair_income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="gov_income_account_id"/>
+                                <div class="row">
+                                    <field name="gov_income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="ground_income_account_id"/>
+                                <div class="row">
+                                    <field name="ground_income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="pickup_account_id"/>
+                                <div class="row">
+                                    <field name="pickup_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="advance_income_account_id"/>
+                                <div class="row">
+                                    <field name="advance_income_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="expense_account_id"/>
+                                <div class="row">
+                                    <field name="expense_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="discount_account_id"/>
+                                <div class="row">
+                                    <field name="discount_account_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Journal Settings</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="cash_journal_id"/>
+                                <div class="row">
+                                    <field name="cash_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="company_journal_id"/>
+                                <div class="row">
+                                    <field name="company_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="discount_company_journal_id"/>
+                                <div class="row">
+                                    <field name="discount_company_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="scratch_company_journal_id"/>
+                                <div class="row">
+                                    <field name="scratch_company_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="receipt_journal_id"/>
+                                <div class="row">
+                                    <field name="receipt_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="trans_journal_id"/>
+                                <div class="row">
+                                    <field name="trans_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="invoice_journal_id"/>
+                                <div class="row">
+                                    <field name="invoice_journal_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="transport_journal_id"/>
+                                <div class="row">
+                                    <field name="transport_journal_id"/>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <h2>Transport Settings</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="new_receipt_msg"/>
+                                <span class="fa fa-lg fa-envelope-o"/>
+                                <div class="row">
+                                    <div class="text-muted col-md-8">
+                                        Set the message when on the new receipt registration
+                                    </div>
+                                    <field name="new_receipt_msg"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="arrival_msg"/>
+                                <span class="fa fa-lg fa-envelope-o"/>
+                                <div class="row">
+                                    <div class="text-muted col-md-8">
+                                        Set the message when on the car arrival
+                                    </div>
+                                    <field name="arrival_msg"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="thanks_msg"/>
+                                <span class="fa fa-lg fa-envelope-o"/>
+                                <div class="row">
+                                    <div class="text-muted col-md-8">
+                                        Set thanks message
+                                    </div>
+                                    <field name="thanks_msg"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="allowed_plate_number_chars"/>
+                                <span class="fa fa-lg fa-car"/>
+                                <div class="text-muted">
+                                    Set allowed Plate Number character set
+                                </div>
+                                <field name="allowed_plate_number_chars"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_tms_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'tms'}</field>
+    </record>
+</data>
+</odoo>

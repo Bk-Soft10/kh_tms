@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_account_payment_register_form" model="ir.ui.view">
+            <field name="name">van.mession.order.form</field>
+            <field name="model">van.mession.order</field>
+            <field name="arch" type="xml">
+                <form string="Register Payment">
+                <group>
+                    <field name="customer_id" />
+                    <field name="partner_id" />
+                </group>
+                <field name="lines">
+                            <tree editable="bottom" limit="200">
+                            <field name="product_id"/>
+                            <field name="qty" />
+                          </tree>
+                       
+                </field>
+                <footer>
+                        <button string="Submit" name="submit" type="object" class="oe_highlight" data-hotkey="q"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+</odoo>

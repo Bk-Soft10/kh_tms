@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="tms.TmsDashboard">
+        <style>
+            .o_control_panel{
+                display: none;
+            }
+            #tms_dashboard{
+              background: #e8e8e8;
+            }
+            @media only screen and (min-width: 768px){
+               .tms_dashboard-wrapper {
+                   padding: 20px;
+               }
+            }
+            
+            .dash-row{
+               width:100%;
+               display:inline-block;
+            }
+            .dash-row.flex {
+              display: inline-flex;
+              flex-wrap: wrap;
+            }
+            
+            .dash-row:after,
+            .dash-row:before{
+                content: " ";
+                display: table;
+            }
+            .dash-row h3, .dash-row h4{
+              font-weight:bold;
+              color: inherit;
+              margin-top: 9px;
+              margin-bottom: 12px;
+            }
+            .row-table.row-flush {
+              height: 80px;
+            }
+            
+            .dash-item {
+              display: inline-block;
+              position: relative;
+              padding: 5px;
+              margin-top: 10px;
+              width: 100%;
+              float:left;
+            }
+            
+            @media (min-width: 400px){
+              .dash-item {
+                  width: 50%;
+              }
+              .dash-item.trip {
+                  width: 50%;
+              }
+            }
+            
+            
+            @media (min-width: 748px){
+              .dash-item {
+                  width: 33%;
+              }
+              .dash-item.trip {
+                  width: 50%;
+              }
+            }
+            
+            @media (min-width: 992px){
+              .dash-item {
+                  width: 20%;
+                  
+              }
+              .dash-item.trip {
+                  width: 20%;
+              }
+            }
+            .mb-sm {
+                margin-bottom: 5px !important;
+            }
+            .dash-item .panel{
+                display: inline-block;
+                width: 100%;
+                margin-bottom: 20px;
+                background-color: #fff;
+                border: 1px solid transparent;
+                border-radius: 0;
+                -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+            }
+            .dash-icon {
+               display: table-cell;
+               table-layout: fixed;
+               vertical-align: middle;
+               padding-left: 4px;
+               padding-right: 0;
+               position: relative;
+               height: 100%;
+               color:#fff;
+            }
+            .dash-icon em{
+              padding-top: 50%;
+            }
+            .a-footer{
+                font-size: 16px;
+                font-weight: 500;
+            }
+            .a-footer .fa{
+                margin-left: 5px;
+            }
+            .dash-heading{
+                  background: #7c868a;
+                  padding: 1px;
+                  padding-left: 20px;
+                  color: #fff;
+            }
+            .mb10 {
+                padding-bottom: 10px;
+            }
+            .bg-draft {
+                background: #ff902b;
+            }
+            .bg-branch {
+                background: #074586;
+            }
+            .bg-trans {
+                background: #3d9bff;
+            }
+            .bg-road {
+                background: #b1a524;
+            }
+            .bg-arrival {
+                background: #ff902b;
+            }
+            .bg-posted {
+                background: #24b145;
+            }
+            .w1x {
+                width: 25%;
+                float: left;
+                position: relative;
+            }
+            .w2x {
+                width: 75%;
+                float: left;
+                position: relative;
+            }
+            .hx {
+                width: 50%;
+                display:inline-block;
+                float:left;
+                border-bottom: 1px solid #cecece;
+                margin-bottom: 4px;
+            }
+            .spnex{
+               font-size:10px;
+            }
+            .bord-right{
+                border-right: 1px solid #cecece;
+            }
+            
+            .dash-row .o_list_buttons{
+                float:right;
+                margin-top:8px;
+                margin-right:10px;
+            }
+            .dash-row .dash-heading h3 {
+                display: inline-block;
+            }
+            
+            #sash-search-box{
+                width: 200px;
+                height: 26px;
+                background-color: #ffffff;
+                color:#000;
+                border: 1px solid #cccccc;
+                border-radius: 13px;
+                display: inline-block;
+                padding: 2px 12px;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+                float: left;
+            }
+            .dash-heading a{
+                color: #fff;
+                margin-left: 4px;
+                margin-right: 4px;
+                font-weight: bold;
+                display: flex;
+                padding-right: 3px;
+                direction: rtl;
+                float: left;
+                border: 1px #dbdbdb  solid;
+                padding: 2px 8px;
+                border-radius: 12px;
+            }
+            .dash-heading a.dash-progress{
+                margin-top: 1px;
+                height: 20px;
+                font-weight: normal;
+                border-radius:0;
+                border: none;
+                cursor: pointer;
+            }
+            .dash-progress .progress{
+                margin: 2px 10px 0 0; 
+                border-radius: 10px;
+                height: 16px;
+                width:120px;
+            }
+            .bg-red {
+                background: #da1414;
+            }
+            .popover{
+                max-width:550px;
+            }
+            .text-center {
+               text-align: center;
+            }
+            .commission-table th{
+                background: #000!important;
+                color: #fff;
+            }
+            .commission-table td.text-center {
+                background: #ededed;
+                padding: 3px;
+                text-align: center;
+            }
+            
+        </style>
+        <div classs="tms_dashboard-wrapper" id="tms_dashboard">
+        <!-- <t t-value="this.state.draft[drafti] if drafti in this.state.draft else None" t-set="drafti"/>
+        <t t-value="this.state.draft[draftc] if draftc in this.state.draft else None" t-set="draftc"/> -->
+        <div class="dash-row">
+            <div class="dash-heading">
+                <h3>Personal Receipts</h3>
+                <!-- <div class="o_list_buttons">
+                    <input type="text" id="sash-search-box" placeholder="ابحث عن سند او رحلة"/>
+                    <t t-if="drafti &gt; 0">
+                        <a href="#" type="button" action="open_receipts_i" state="d">
+                            <i class="fa fa-exclamation-triangle" style="color: #fffa2b;font-size: 18px;"/>
+                            <t t-esc="drafti"/> &amp;nbsp; Drafts
+                        </a>
+                    </t>
+                    <t t-if="create_itans">
+                        <a href="#" type="button" action="create_itrans" state="n">
+                            New Internal Trans 
+                        </a>
+                    </t> 
+                    <t t-if="create_receipt">
+                        <a href="#" type="button" action="open_receipts_i" state="n">
+                            New Personal Receipt
+                        </a>
+                    </t>
+                </div> -->
+            </div>
+            <!-- <t t-set="rkys" t-value="this.state.rkys"/>
+            <t   t-foreach="this.state.rkys" t-as="dash" t-key="dash">
+                <t t-value="this.state.receiptsi[dash] if dash in this.state.receiptsi else None" t-set="item"/>
+                <t t-value="this.state.receiptstoi[dash] if dash in this.state.receiptstoi else None" t-set="item2"/>
+                <div class="dash-item">
+                  <div class="panel widget mb0 b0">
+                      <div class="row-table row-flush">
+                          <div t-att-class="'w1x text-center dash-icon bg-'+ item[3]">
+                              <em t-att-class="'fa-2x fa fa-'+ item[4] "/>
+                          </div>
+                          <div class="w2x">
+                              <div class="text-center">
+                                  <t t-if="dash=='t'">
+                                    <a href="#" class="hx d-link" action="open_receipts_i" style="width:100%" t-att-state="item[1]" to="1">
+                                          <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                          <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                    </a>
+                                  </t>
+                                  <t t-if="dash!='t'">
+                                      <a href="#" class="hx d-link bord-right" action="open_receipts_i" t-att-state="item[1]">
+                                          <i class="fa fa-arrow-up" style="margin-right: 2px;"/><span class="spnex">Outgoing</span>
+                                          <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                      </a>
+                                      <a href="#" class="hx d-link" action="open_receipts_i" t-att-state="item2[1]" to="1">
+                                          <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                          <h4 class="mb-sm"><t t-esc="item2[0]"/></h4>
+                                      </a>
+                                  </t>
+                                  <strong class="text-muted"><t t-esc="item[2]"/></strong>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </t> -->
+        </div>
+        <div class="dash-row">
+            <div class="dash-heading">
+                
+                <h3>Company Receipts</h3>
+                <div class="o_list_buttons">
+                    <!-- <t t-if="create_receipt and commission"> -->
+                        <!-- <t t-call="tms.tms_dashboard_commision_progress"/> -->
+                    <!-- </t> -->
+                    <!-- <t t-if="draftc &gt; 0">
+                        <a href="#" type="button" action="open_receipts_c" state="d">
+                            <i class="fa fa-exclamation-triangle" style="color: #fffa2b;font-size: 18px;"/>
+                            <t t-esc="draftc"/> &amp;nbsp; Drafts
+                        </a>
+                    </t> -->
+                    <!-- <t t-if="create_trip">
+                        <a href="#" type="button" action="create_trip" state="n">
+                            New Trip
+                        </a>
+                    </t>
+                    <t t-if="create_receipt">
+                        <a href="#" type="button" action="open_receipts_c" state="n">
+                            New Company Receipt
+                        </a>
+                    </t> -->
+                </div>
+                
+            </div>
+
+            <!-- <t  t-foreach="this.state.rkys" t-as="dash"  t-key="dash">
+                <t t-value="this.state.receiptsc[dash] if dash in this.state.receiptsc else None" t-set="item"/>
+                <t t-value="this.state.receiptstoc[dash] if dash in this.state.receiptstoc else None" t-set="item2"/>
+                <div class="dash-item">
+                    <div class="panel widget mb0 b0">
+                        <div class="row-table row-flush">
+                            <div t-att-class="'w1x text-center dash-icon bg-'+ item[3]">
+                                <em t-att-class="'fa-2x fa fa-'+ item[4] "/>
+                            </div>
+                            <div class="w2x">
+                                <div class="text-center">
+                                    <t t-if="dash=='t'">
+                                        <a href="#" class="hx d-link" action="open_receipts_c" style="width:100%" t-att-state="item[1]" to="1">
+                                            <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                            <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                        </a>
+                                    </t>
+                                    <t t-if="dash!='t'">
+                                        <a href="#" class="hx d-link bord-right" action="open_receipts_c" t-att-state="item[1]">
+                                            <i class="fa fa-arrow-up" style="margin-right: 2px;"/><span class="spnex">Outgoing</span>
+                                            <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                        </a>
+                                        <a href="#" class="hx d-link" action="open_receipts_c" t-att-state="item2[1]" to="1">
+                                            <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                            <h4 class="mb-sm"><t t-esc="item2[0]"/></h4>
+                                        </a>
+                                    </t>
+                                    <strong class="text-muted"><t t-esc="item[2]"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t> -->
+        </div>
+        
+        <!-- <t t-call="tms.tms_dashboard_trips"/> -->
+        </div>
+    </t>
+</templates>

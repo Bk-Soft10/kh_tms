@@ -1,0 +1,48 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_user_tms_receipt,TMS Receipts,model_tms_receipt,tms.group_tms_user,1,1,1,0
+access_user_tms_itrans,TMS Internal Transport,model_tms_itrans,tms.group_tms_user,1,1,1,0
+access_user_tms_trip,TMS Trips,model_tms_trip,tms.group_tms_user,1,1,1,1
+access_user_tms_batch_receipt_post,TMS Batch Receipts Post,model_tms_batch_receipt_post,tms.group_tms_user,1,0,0,0
+access_user_tms_move,TMS Move,model_tms_move,tms.group_tms_user,1,0,0,0
+access_user_tms_state,TMS Area State,model_tms_state,tms.group_tms_user,1,0,0,0
+access_user_tms_city,TMS Area City,model_tms_city,tms.group_tms_user,1,0,0,0
+access_user_tms_branch,TMS Transport Branches,model_tms_branch,tms.group_tms_user,1,0,0,0
+access_user_tms_cbrand,TMS Car Brand,model_tms_cbrand,tms.group_tms_user,1,0,0,0
+access_user_tms_cmodel,TMS Car Model,model_tms_cmodel,tms.group_tms_user,1,0,0,0
+access_user_tms_car_type,TMS Car Type,model_tms_car_type,tms.group_tms_user,1,0,0,0
+access_user_tms_car_state,TMS Car State,model_tms_car_state,tms.group_tms_user,1,0,0,0
+access_user_tms_truck,TMS Truck,model_tms_truck,tms.group_tms_user,1,1,0,0
+access_user_tms_freight_state,TMS Freight State,model_tms_freight_state,tms.group_tms_user,1,0,0,0
+access_user_tms_ground,TMS Ground,model_tms_ground,tms.group_tms_user,1,0,0,0
+access_user_tms_truck_type,TMS Truck Type,model_tms_truck_type,tms.group_tms_user,1,0,0,0
+access_user_tms_receipt_route,TMS Receipt Route,model_tms_receipt_route,tms.group_tms_user,1,1,1,1
+access_user_tms_trip_route,TMS Trip Route,model_tms_trip_route,tms.group_tms_user,1,1,1,1
+access_user_tms_partner_price_list,TMS Partner Price List,model_tms_partner_price_list,tms.group_tms_user,1,0,0,0
+access_user_tms_ground_price, TMS Ground Price,model_tms_ground_price,tms.group_tms_user,1,0,0,0
+access_user_tms_receipt_add_price, TMS Add Price,model_tms_receipt_add_price,tms.group_tms_user,1,0,0,0
+access_user_tms_driver_expense, TMS Driver Expense Settings,model_tms_driver_expense_calc,tms.group_tms_user,1,0,0,0
+access_admin_tms_batch_receipt_post,TMS Batch Receipts Post,model_tms_batch_receipt_post,tms.group_tms_admin,1,1,1,0
+access_admin_tms_move,TMS Move,model_tms_move,tms.group_tms_admin,1,1,1,0
+access_admin_tms_state,TMS Area State,model_tms_state,tms.group_tms_admin,1,1,1,0
+access_admin_tms_city,TMS Area City,model_tms_city,tms.group_tms_admin,1,1,1,0
+access_admin_tms_branch,TMS Transport Branches,model_tms_branch,tms.group_tms_admin,1,1,1,0
+access_admin_tms_cbrand,TMS Car Brand,model_tms_cbrand,tms.group_tms_admin,1,1,1,0
+access_admin_tms_cmodel,TMS Car Model,model_tms_cmodel,tms.group_tms_admin,1,1,1,0
+access_admin_tms_car_type,TMS Car Type,model_tms_car_type,tms.group_tms_admin,1,1,1,0
+access_admin_tms_car_state,TMS Car State,model_tms_car_state,tms.group_tms_admin,1,1,1,0
+access_admin_tms_truck,TMS Truck,model_tms_truck,tms.group_tms_admin,1,1,1,0
+access_admin_tms_freight_state,TMS Freight State,model_tms_freight_state,tms.group_tms_admin,1,1,1,0
+access_admin_tms_ground,TMS Ground,model_tms_ground,tms.group_tms_admin,1,1,1,0
+access_admin_tms_truck_type,TMS Truck Type,model_tms_truck_type,tms.group_tms_admin,1,1,1,0
+access_admin_tms_partner_price_list,TMS Partner Price List,model_tms_partner_price_list,tms.group_tms_admin,1,1,1,0
+access_admin_tms_receipt_add_price, TMS Add Price,model_tms_receipt_add_price,tms.group_tms_admin,1,1,1,1
+access_admin_tms_driver_expense, TMS Driver Expense Settings,model_tms_driver_expense_calc,tms.group_tms_admin,1,1,1,0
+access_tms_city,tms_city,model_tms_city,tms.group_tms_admin,1,1,1,0
+access_tms_freight_price,tms_freight_price,model_tms_freight_price,tms.group_tms_admin,1,1,1,0
+access_tms_branch_dest,tms_branch_dest,model_tms_branch_dest,tms.group_tms_admin,1,1,1,0
+access_tms_trip_receipt_mapping,tms_trip_receipt_mapping,model_tms_trip_receipt_mapping,tms.group_tms_admin,1,1,1,0
+access_tms_trip_receipt_selector,tms_trip_receipt_selector,model_tms_trip_receipt_selector,tms.group_tms_admin,1,1,1,0
+access_tms_post_receipt,tms_post_receipt,model_tms_post_receipt,tms.group_tms_user,1,1,1,0
+access_tms_batch_receipt_post_line,tms_batch_receipt_post_line,model_tms_batch_receipt_post_line,tms.group_tms_user,1,1,1,0
+access_tms_batch_receipt_post_selector,tms_batch_receipt_post_selector,model_tms_batch_receipt_post_selector,tms.group_tms_user,1,1,1,0
+access_tms_change_receipt_price,tms_change_receipt_price,model_tms_change_receipt_price,tms.group_tms_user,1,1,1,0

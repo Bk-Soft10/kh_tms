@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_tms_trip_receipt_by_branch" model="ir.ui.view">
+            <field name="name">tms_trip_receipt_by_branch</field>
+            <field name="model">tms.trip.receipt.selector</field>
+            <field name="arch" type="xml">
+                <form string="Tripe by Receipts">
+                    <group>
+                        string="This wizard will select receipt routes for all selected receipt(s) based on the dates and credit note specified on current branch.
+                    </group>
+                    <!-- <group>
+                        <field name="receipt_id" widget="barcode" string="Receipt No" placeholder="Enter receipt or barcode"/>
+                    </group> -->
+                    <group colspan="4" >
+                        <separator string="Receipts" colspan="4"/>
+                        <newline/>
+                        <field name="receipt_ids" nolabel="0" widget="many2many_tags" context="{'selector': True}" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="compute_trip" string="Insert" type="object" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_tms_receipt_by_branch" model="ir.actions.act_window">
+            <field name="name">Select Receipts</field>
+            <field name="res_model">tms.trip.receipt.selector</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_trip_receipt_by_branch"/>
+            <field name="target">new</field>
+        </record>
+        
+        
+</odoo>
+        

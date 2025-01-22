@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_van_mession,van_mession,model_van_mession,base.group_user,1,1,1,1
+access_van_mession_line,van_mession_line,model_van_mession_line,base.group_user,1,1,1,1
+access_van_mession_order,van_mession_order,model_van_mession_order,base.group_user,1,1,1,1
+access_van_mession_order_line,van_mession_order_line,model_van_mession_order_line,base.group_user,1,1,1,1

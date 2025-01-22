@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="fleet_custom.list">
+      <field name="name">fleet_custom list</field>
+      <field name="model">fleet_custom.fleet_custom</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="fleet_custom.action_window">
+      <field name="name">fleet_custom window</field>
+      <field name="res_model">fleet_custom.fleet_custom</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="fleet_custom.action_server">
+      <field name="name">fleet_custom server</field>
+      <field name="model_id" ref="model_fleet_custom_fleet_custom"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="fleet_custom" id="fleet_custom.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="fleet_custom.menu_1" parent="fleet_custom.menu_root"/>
+    <menuitem name="Menu 2" id="fleet_custom.menu_2" parent="fleet_custom.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="fleet_custom.menu_1_list" parent="fleet_custom.menu_1"
+              action="fleet_custom.action_window"/>
+    <menuitem name="Server to list" id="fleet_custom" parent="fleet_custom.menu_2"
+              action="fleet_custom.action_server"/>
+-->
+  </data>
+</odoo>

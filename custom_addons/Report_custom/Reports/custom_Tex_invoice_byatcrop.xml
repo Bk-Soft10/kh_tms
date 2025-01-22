@@ -1,0 +1,657 @@
+<odoo>
+    <template id="custom_Tex_invoice_byatcrop">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+               <t t-call="web.basic_layout">
+
+
+             <!-- Add Google Fonts Link in the <head> -->
+
+            <style>
+                .header {
+                          margin-top: 100px;
+                          padding-top: 30;
+                 background-color: #F5F5F5;
+                          }
+
+        /* Reset the margin or padding of the body to ensure no space */
+                         .page {
+                          margin-top: 300px;
+                          padding-top: 0;
+                          }
+
+
+                .row.mt32.mb32 {
+    margin-top: 0px; /* Adjust as needed */
+    margin-bottom: 0px; /* Adjust as needed */
+}
+
+               .header , .invoice-header, .client-info, .invoice-details, .total-section, .payment-terms {
+                    width: 100%;
+                    margin-bottom: 10px;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+                .div-info {
+                     display: flex; align-items: center;
+                }
+                .company-info {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                }
+                .company-logo img {
+                    max-height: 50px;
+                    width: 50px;
+                    height : 100px;
+                    padding-left: 80px;
+
+                }
+                .company-contact {
+                    padding-right: 300px;
+                    text-align: right;
+                    font-size: 12px;
+                }
+                .company-contact p {
+                    margin: 0;
+                    line-height: 1.4;
+                }
+                .company-contact i {
+                    margin-right: 5px;
+                    color: #333;
+                }
+                .client-info p, .invoice-details p {
+                    margin: 0;
+                    font-size: 8px;
+                }
+
+
+                .invoice-details {
+                    background-color: #F5F5F5;
+                    padding: 5px 0;
+                }
+
+                .header-details {
+                    background-color: #FFFFFF;
+                    padding: 10px;
+                }
+
+                .invoice-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 12px;
+                }
+                .invoice-table th, .invoice-table td {
+
+                    padding: 8px;
+                    text-align: right;
+                }
+                .invoice-table th {
+                    background-color: #FFFFFF;
+                    color: #000000;
+                }
+                .invoice-table td {
+                    color: #333;
+                }
+                .total-section p, .payment-terms p {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    text-align: right;
+                }
+                .grand-total {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                .payment-terms {
+                    border-top: 1px solid #ddd;
+                    padding-top: 10px;
+                    font-size: 12px;
+                }
+                .hr {
+                    padding: 5px;
+                    border-bottom: 2px solid #000;
+                }
+
+                .invoice-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.to-client {
+    font-size: 12px;
+    line-height: 1.6;
+    width: 40%;
+}
+
+.to-client h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.to-client p {
+    margin: 0;
+}
+
+.invoice-info {
+    width: 55%;
+    text-align: right;
+    font-size: 12px;
+}
+.Footer-data table {
+    width: 100%;
+                font-size: 8px;
+    border-collapse: collapse;
+     text-align: right; /* Align text to the right */
+}
+.invoice-date table {
+    width: 100%;
+                font-size: 15px;
+    border-collapse: collapse;
+     text-align: center; /* Align text to the right */
+}
+                .section-date  {
+     padding: 5px 15px;
+    border-bottom: 2px solid #000000; /* Black underline for invoice details */
+
+                  width: auto; /* Adjust width if needed */
+    text-align: center; /* Center text */
+
+}
+
+                .horizontal-line {
+    border-bottom: 2px solid #FFA500; /* 2px thick solid black line */
+    width: 60%; /* Full width of the container */
+    margin: 2px 0; /* Adds space above and below the line */
+            float: right;
+}
+                   .horizontal-line_header_table {
+    border: 1px solid black; /* 2px thick solid black line */
+    width: 100%; /* Full width of the container */
+    margin: 5px 0; /* Adds space above and below the line */
+            float: right;
+
+}
+
+
+.invoice-date strong {
+    font-size: 30px;
+    color: black;
+ font-family: 'Segoe UI', sans-serif;
+}
+                .tax_invoiceLable {
+                     font-size: 12px;
+                     font-family: 'Segoe UI', sans-serif;
+                     text-align: right;
+}
+                .tax_invoiceLable_footer {
+                font-size: 10px;
+                font-family: 'Segoe UI', sans-serif;
+                text-align: center;
+
+                }
+                .Footer-data p{
+                font-family: 'Segoe UI', sans-serif;
+                font-weight: bold;
+                color:#7E99AC;
+}
+                .invoice-date p{
+                font-family: 'Segoe UI', sans-serif;
+                font-size: 15px;
+                font-weight: bold;
+                color: #000000;
+}
+
+
+                 .invoice-date h2{
+                font-family: 'Segoe UI', sans-serif;
+                font-size: 10px;
+                font-weight: bold;
+                color: #000000;
+
+
+}
+
+                .th-border-black {
+                 border: 1px solid black; /* Black border */
+                 background-color: #000;
+                 color: white;              /* White text */
+                 text-align: center;        /* Centered text */
+                padding: 8px;
+                width: 50%; /* Left column takes 50% */
+                 text-align: left;
+}
+                  .th-border-gray {
+                 background-color: #f2f2f2;
+                width: 50%; /* Left column takes 50% */
+                 text-align: left;
+
+}
+                .left-column {
+                 width: 50%; /* Left column takes 50% */
+                 text-align: left;
+}
+
+                 .right-column {
+                 width: 50%; /* Right column takes 50% */
+                    text-align: right;
+}
+             .vl {
+                   border-left: 6px solid #ffca33; height: 120px; margin-right: 10px;
+}
+
+                .container {
+    display: flex;
+    justify-content: space-between; /* Pushes left and right divs apart */
+    align-items: center; /* Vertically centers text (optional) */
+    width: 100%; /* Full width of the container */
+
+}
+
+.left-text {
+                 font-family: 'Segoe UI', sans-serif;
+                font-size: 10px;
+                 text-align: left; /* Aligns text to the left */
+}
+
+.right-text {
+                font-family: 'Segoe UI', sans-serif;
+                font-size: 10px;
+                text-align: right; /* Aligns text to the right */
+}
+
+                  .custom-table tr {
+        margin-bottom: 10px; /* Adds space below each row */
+    }
+    .custom-table td {
+        padding-bottom: 10px; /* Adds padding inside each cell */
+    }
+
+
+
+
+            </style>
+
+            <!-- Invoice Header -->
+             <div class="header">
+                 <!--  part (1) -->
+                     <div class="row mt32 mb32">
+                         <div class="col-5">
+                            <div>
+                                <div style="font-family: 'Segoe UI', sans-serif; font-size: 50px;">   فاتورة ضريبية</div>
+                                <p></p>
+                                <div style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 50px;color:#7E99AC;">  Tax Invoice</div>
+                            </div>
+                         </div>
+                         <div class="col-4"></div>
+                         <div class="col-3">
+                            <div  style="margin-top: -8pt; padding-left:30pt;">
+                                <img t-attf-src="data:image/png;base64, {{doc.qr}}"/>
+
+                            </div>
+
+                         </div>
+                     </div>
+             </div>
+
+       <div class="page">
+            <div class="invoice-header">
+
+
+                              <!--  part (2) -->
+                <div class="row mt32 mb32">
+                    <div class="col-3"></div>
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <img t-att-src="'/Report_custom/static/src/img/Log.jpeg'"
+    alt="Default Logo"
+    style="width: 400px; height: 200px;"
+/>
+
+
+                        <!--
+                      <div class="client-info">
+                                <img style="width: 450px;" t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"  alt="Company Logo"/>
+                            </div>
+-->
+                    </div>
+                </div>
+
+                <div class="row mt32 mb32">
+
+
+                    <div class="col-6">
+                        <div class="invoice-date">
+                            <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; font-size: 15px;">
+                                <tr>
+                                    <td style="text-align: left;white-space: nowrap;color:#7E99AC;">
+                                        Invoice To \فاتـــــــــــــــــــوره الي
+
+                                    </td>
+                                  <td style="padding: 2px 2px;text-align: left;"> : <span t-esc="doc.partner_id.name" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;white-space: nowrap;color:#7E99AC;">
+                                            The Address \العنـــــــــــــــــــوان
+                                      </td>
+                                    <td style="padding: 2px 2px;text-align: left;">: <span t-esc="doc.partner_id.street" />,
+                                        <span t-esc="doc.partner_id.city" />,
+                                         <span t-esc="doc.partner_id.country_id.name" /></td>
+                                </tr>
+                                  <tr>
+                                    <td style="text-align: left;white-space: nowrap;color:#7E99AC;">
+                                        Tex Number \  الرقم الضريبي
+                                   </td>
+                                  <td style="padding: 2px 2px;text-align: left;"> : <span t-esc="doc.partner_id.vat" /></td>
+                                </tr>
+
+            </table>
+                            </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="invoice-date">
+                            <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; font-size: 15px;">
+                                <tr>
+                                    <td style="text-align: left;white-space: nowrap;color:#7E99AC;">
+                                        Tex Number \  الرقم الضريبي
+                                   </td>
+                                  <td style="padding: 2px 2px;text-align: left;"> : <span t-esc="doc.company_id.vat" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;white-space: nowrap;color:#7E99AC;">
+                                            The Address \العنـــــــــــــــــــوان
+                                     </td>
+                                    <td style="padding: 2px 2px; text-align: left;">: <span t-esc="doc.company_id.street" />, <span t-esc="doc.company_id.city" />, <span t-esc="doc.company_id.country_id.name" /></td>
+                                </tr>
+
+            </table>
+                            </div>
+                    </div>
+
+                </div>
+
+          </div>
+
+
+            <!-- Invoice Table -->
+            <table class="invoice-table">
+                <thead>
+
+                    <tr class="invoice-date">
+
+                         <th class="section-date"><p>
+                             Description <br></br>
+                         الوصف
+                         </p> </th>
+                        <th class="section-date"><p> Quantity <br></br>  الكمية</p></th>
+                        <th class="section-date"><p>   Unit Price <br></br>
+                        سعر الوحدة
+                        </p></th>
+                        <th class="section-date"><p>
+                            Total <br></br>
+                        الإجمالي
+                        </p></th>
+                        <th class="section-date"></th>
+                        <th class="section-date"></th>
+                     </tr>
+                </thead>
+                <tbody>
+
+                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        <tr class="invoice-date">
+                            <td><span t-esc="line.product_id.display_name" /><br/><small t-esc="line.name" /></td>
+                            <td><span t-esc="line.quantity" /></td>
+                            <td><span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                            <td><span t-esc="line.price_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                            <td></td>
+                             <td></td>
+                          </tr>
+                    </t>
+
+                </tbody>
+            </table>
+
+             <br></br>
+             <br></br>
+             <!--- Footer -->
+           <div class="horizontal-line_header_table"></div>
+                      <div class="row mt32 mb32">
+                          <div class="col-4">
+                                   <div class="invoice-date">
+                                   <!--    <table>
+                <tr>
+                    <td> <div class="horizontal-line_header_table"></div></td>
+                    <td><div class="horizontal-line_header_table"></div></td>
+                </tr>
+                <tr>
+                    <td><h2> بنك الرياض</h2>  </td>
+                    <td calss="tax_invoiceLable_footer">   <p>:       إسم البنك </p> </td>
+                </tr>
+                <tr>
+                    <td> <h2> شركة بيات كروب المحدوة </h2></td>
+                    <td calss="tax_invoiceLable_footer">    <p>:    اسم المستفيد</p></td>
+                </tr>
+                <tr>
+
+                    <td> <h2>SA 4020000001861550139940</h2>   </td>
+                    <td calss="tax_invoiceLable_footer"><p>:         الايبان      </p></td>
+                 </tr>
+            </table> -->
+                                   </div>
+                          </div>
+                          <div class="col-8">
+                             <div class="invoice-date">
+            <table>
+                <tr>
+                    <td calss="tax_invoiceLable_footer">
+                         <p>   Total Amount   </p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <p> المبلغ الإجمالي</p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                      <span style="font-family: 'Segoe UI', sans-serif;font-weight: bold;color:#7E99AC;" t-esc="doc.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                     </td>
+                </tr>
+                 <tr>
+                    <td calss="tax_invoiceLable_footer">
+                         <p>   Added Tax 15%   </p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <p>   القيمة المضافة 15 %</p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <t t-set="tax_total" t-value="0.0"/>
+                         <t t-set="discount_total" t-value="0.0"/>
+
+                             <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                 <t t-set="line_tax_total" t-value="0.0"/>
+                                 <t t-foreach="line.tax_ids" t-as="tax">
+                                     <t t-set="tax_total"
+                                        t-value="tax_total + (line.price_subtotal or 0.0) * (tax.amount or 0.0) / 100.0"/>
+                                     <t t-set="line_tax_total"
+                                        t-value="line_tax_total + (tax.amount or 0.0)"/>
+                                 </t>
+                             </t>
+
+
+
+                         <span style="font-family: 'Segoe UI', sans-serif;font-weight: bold;color:#7E99AC;" t-esc="tax_total" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                     </td>
+                </tr>
+                <tr>
+                    <td calss="tax_invoiceLable_footer">
+                         <p>  Total Including VAT </p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <p>    الاجمالي شامل ضريبية
+القيمة المضافة</p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                     <span style="font-family: 'Segoe UI', sans-serif;font-weight: bold;color:#7E99AC;" t-esc="doc.amount_total"  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                     </td>
+                </tr>
+                 <tr>
+                    <td calss="tax_invoiceLable_footer">
+                         <p>  Total Amount</p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <p>  المبلغ المستحق</p>
+                     </td>
+                     <td calss="tax_invoiceLable_footer">
+                         <span  style="font-family: 'Segoe UI', sans-serif;font-weight: bold;color:#7E99AC;" t-esc="doc.amount_residual"  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+
+                     </td>
+                </tr>
+
+
+
+
+
+
+
+            </table>
+        </div>
+
+                          </div>
+                      </div>
+
+
+                    <div class="footer" style="background-color: #F5F5F5; margin-top: auto;padding: 20px 10px;">
+                        <div style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 20px;" class="left-text">Bank account information
+        بيانات الحساب البنكي
+                        </div>
+                        <br></br>
+
+                        <!-- information part (1) -->
+                          <div>
+
+                          <div class="col-11">
+                             <div>
+                                 <table style="text-align: left;border-spacing: 15px; width: 100%;">
+                                     <tr style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 8px;color:#7E99AC;">
+                    <td>
+                           Bank name
+                         اسم البنك
+
+                     </td>
+                     <td>
+                            Beneficiary Name
+                         اسم المستفيد
+
+                     </td>
+                                         <td>
+                             IBN
+                          الأيبان
+
+                     </td>
+                 </tr>
+                 <tr style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 8px;" >
+                    <td >
+                            Riyad Bank
+                         بنك الرياض
+
+                     </td>
+                     <td>
+                                 Byat Corp Limited
+                         شركة بيات كروب المحدودة
+
+                     </td>
+                     <td>  SA 4520000003000341679940</td>
+                </tr>
+
+            </table>
+        </div>
+
+                          </div>
+                              <div class="col-1">
+                          </div>
+                      </div>
+                        <!-- End -->
+                        <div style="border-top: 2px solid black; margin: 10px 0;"></div> <!-- Black line -->
+
+
+                          <!-- information part (2) -->
+                          <div >
+
+                          <div class="col-11">
+                             <div>
+                                 <table style=" text-align: left;border-spacing: 15px; width: 100%;">
+                                     <tr style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 8px; color:#7E99AC;">
+                                         <td >
+                          <p>
+        Email
+        البريد الإلكتروني
+    </p>
+                     </td>
+                                   <td>
+                         <p>    Wepsite
+                          الموقع الالكتروني
+                         </p>
+                     </td>
+                                         <td>
+                         <p>    WhatsApp
+                          تواصل- واتساب
+                         </p>
+                     </td>
+                        <td>
+                         <p>    Tell
+                             هاتف
+                         </p>
+                     </td>
+                           <td>
+                         <p>    Location
+                             الموقع
+                         </p>
+                     </td>
+                 </tr>
+                 <tr style="font-family: 'Segoe UI', sans-serif;font-weight: bold; font-size: 8px;">
+                    <td >
+                           info@byat.sa
+                     </td>
+                     <td>
+                             www.byat.sa
+
+                     </td>
+                     <td>
+                         +966 56 478 3800
+                     </td>
+                     <td>
+                             920 00 67 26
+
+                     </td>
+                      <td>
+
+                             Jeddah, Al Muhammadiyah District<br></br>
+                           Sofia Bint Abdul Muttalib Street, JEMA3666
+                     </td>
+
+
+                </tr>
+
+            </table>
+        </div>
+
+                          </div>
+                              <div class="col-1">
+                          </div>
+                      </div>
+                          <!-- End -->
+
+
+
+                     </div>
+
+                     <!-- end -->
+               </div>
+             </t>
+            </t>
+
+        </t>
+    </template>
+</odoo>

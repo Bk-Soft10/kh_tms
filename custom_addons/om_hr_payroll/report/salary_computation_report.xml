@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_salary_computation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                                body, table, td, strong, h2, th, p, div, span {
+                                    font-family: 'Segoe UI', sans-serif;
+                                }
+                                .header {
+                                    background-color: #A7C7E7; /* Header color */
+                                    color: white;
+                                    padding: 20px;
+                                    margin-bottom: 20px;
+                                }
+                                .info-box {
+                                    border: 1px solid #ddd;
+                                    padding: 10px;
+                                    margin-bottom: 20px;
+                                    border-radius: 5px;
+                                }
+                                .table-striped tbody tr:nth-of-type(odd) {
+                                    background-color: rgba(0,0,0,.05);
+                                }
+                                .total-row {
+                                    background-color: #A7C7E7; /* Total row color */
+                                    font-weight: bold;
+                                }
+                                .highlight {
+                                    background-color: #A7C7E7; /* Highlight color for important info */
+                                }
+                                .section-date  {
+                                padding: 5px;
+                                border-bottom: 2px solid #000; /* Black underline for invoice details */
+
+                          }
+                            </style>
+
+                            <div class="header">
+                                <h2><i class="fa fa-file-text-o mr-2"></i>Salary Computation</h2>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="info-box highlight">
+                                        <h4><i class="fa fa-user mr-2"></i>Employee Information</h4>
+                                        <p><strong>Name:</strong> <span t-field="o.employee_id.name"/></p>
+                                        <p><strong>Position:</strong> <span t-field="o.employee_id.job_id.name"/></p>
+                                        <p><strong>Department:</strong> <span t-field="o.employee_id.department_id.name"/></p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-box highlight">
+                                        <h4><i class="fa fa-calendar mr-2"></i>Pay Period</h4>
+                                        <p><strong>From:</strong> <span t-field="o.date_from"/></p>
+                                        <p><strong>To:</strong> <span t-field="o.date_to"/></p>
+                                        <p><strong>Contract:</strong> <span t-field="o.contract_id.name"/></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4"><i class="fa fa-list-alt mr-2"></i>Salary Details</h4>
+                            <table class="table table-sm table-striped">
+                                <thead style="background-color: #2980b9; color: white;">
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Code</th>
+                                        <th>Category</th>
+                                        <th class="text-right">Amount</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                        <tr style='background-color: #ffffff;'>
+                                            <td><span t-field="line.name"/></td>
+                                            <td><span t-field="line.code"/></td>
+                                            <td><span t-field="line.category_id.name"/></td>
+                                            <td class="text-right"><span t-field="line.amount"/></td>
+                                            <td class="text-right"><span t-field="line.total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="total-row">
+                                        <td colspan="4" class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <strong t-esc="sum(o.line_ids.filtered(lambda line: line.appears_on_payslip).mapped('total'))"
+                                                    t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <br/>
+                            <table style="font-size: 20px; font-family: 'Segoe UI', sans-serif; width: 100%; direction: rtl;">
+    <thead>
+        <tr>
+            <td class="section-date" width="20%" style="padding: 2pt; text-align: right;">
+                Salary
+            </td>
+            <td class="section-date" width="20%" style="padding: 2pt; text-align: right;">
+                <strong t-esc="sum(o.line_ids.filtered(lambda line: line.appears_on_payslip).mapped('total'))"
+                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+            </td>
+            <td width="60%" style="font-weight: bold; padding: 1pt; text-align: right;">
+            </td>
+        </tr>
+    </thead>
+</table>
+
+
+
+                            <!-- Additional notes or information -->
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <p><i class="fa fa-info-circle mr-2"></i><strong>Note:</strong> This is a computer-generated document and does  require a signature.</p>
+                                </div>
+                            </div>
+
+                        </div><!-- End of page -->
+                    </t><!-- End of external layout -->
+                </t><!-- End of foreach -->
+            </t><!-- End of html container -->
+        </template><!-- End of report template -->
+    </data><!-- End of data -->
+</odoo><!-- End of odoo -->

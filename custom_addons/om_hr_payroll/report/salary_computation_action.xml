@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="action_report_salary_computation" model="ir.actions.report">
+         <field name="name">Salary Computation Report</field>
+         <field name="model">hr.payslip</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">om_hr_payroll.report_salary_computation</field>
+         <field name="report_file">om_hr_payroll.report_salary_computation</field>
+         <field name="binding_model_id" ref="model_hr_payslip"/>
+         <field name="binding_type">report</field>
+     </record>
+
+</odoo>

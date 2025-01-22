@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_employee_driver_form" model="ir.ui.view">
+            <field name="name">hr.employee.driver.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                
+                <div class="oe_title" position="inside">
+                    <field name="emp_code" placeholder="Employee Code"/>
+                </div>
+                <field name="resource_calendar_id" position="after">
+					<field name="is_driver" invisible="context.get('driver', 0)" readonly="0"/>
+				</field>
+				<data>
+    				<xpath expr="//sheet" position="before">
+                        <header>
+                            <field name="state" nolabel="1"  widget="statusbar"/>
+                        </header>
+                    </xpath>
+                    <xpath expr="//field[@name='identification_id']" position="after">
+                        <field name="id_issue_place"/>
+                        <field name="id_expiry_hijry"/>
+                    </xpath>
+                    <xpath expr="//field[@name='passport_id']" position="after">
+                        <field name="passport_source"/>
+                        <field name="passport_issue_date"/>
+                        <field name="passport_expiry_date"/>
+                    </xpath>
+                    <xpath expr="//field[@name='is_address_home_a_company']" position="after">
+                        <field name="profession"/>
+                        <field name="social_no"/>
+                        <field name="guarantor"/>
+                    </xpath>
+                    <xpath expr="//group[@name='work_permit']" position="inside">
+                        <field name="medical_insurance_no"/>
+                        <field name="insurance_class"/>
+                        <field name="medical_insurance_count"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        
+        <record id="edit_holiday_status_form" model="ir.ui.view">
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="code" required="1"/>
+                </xpath>
+            </field>
+        </record>
+         
+    </data>
+</odoo>

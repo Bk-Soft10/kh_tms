@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="view_tms_itrans_form" model="ir.ui.view">
+            <field name="name">tms.itrans.form</field>
+            <field name="model">tms.itrans</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Internal Transport">
+                    <field name="state" invisible="1"/>
+                    <field name="is_comp" invisible="1" for_save="1"/>
+                    <field name="receipt_id" invisible="1"/>
+                    <field name="payment_total" invisible="1" />
+                    <field name="amount_total" invisible="1" />
+                    <field name="use_contract" invisible="1"/> 
+                    <field name="can_cancel" invisible="1"/> 
+                    <field name="can_post" invisible="1"/>
+                    <field name="can_change_date" invisible="1"/>
+                    <field name="is_receipt" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="can_edit" invisible="1"/>
+                    <field name="has_entry" invisible="1"/>
+                    <header>
+                        <button name="action_cancel_itrans" string="Cancel" type="object" attrs="{'invisible':['|', ('can_cancel', '=', False), ('id', '=', False)]}" confirm="Are you sure you want to cancel receipt?"/>
+                        <button name="action_confirm_itrans" states="d" class="oe_highlight" string="Validate" type="object" invisible="context.get('receipt', False)"/>
+                        <button name="action_register_payment" string="Register Paymeny" class="oe_highlight" type="object" attrs="{'invisible': [('residual', '=', 0)]}"/>
+                        <button name="action_cancel_entry" string="Cancel Entry" class="oe_highlight" type="object" groups="account.group_account_manager" attrs="{'invisible': [('has_entry', '=', False)]}"/>
+                        <field name="state" nolabel="1" statusbar_visible="d,o,p" widget="statusbar" attrs="{'invisible':[('state','=','c')]}"/>
+                        <field name="state" nolabel="1" statusbar_visible="c" widget="statusbar" attrs="{'invisible':[('state','!=','c')]}"/>
+                    </header>
+                    <sheet string="Internal Transport">
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" string="Print Voucher" icon="fa-print" name="action_print_voucher" type="object" attrs="{'invisible': ['|', ('state','=','d'), ('payment_total','=',0)]}"/>
+                            <button class="oe_stat_button" string="Print Route" icon="fa-print" name="action_print_route" type="object" attrs="{'invisible': [('state','=','d')]}"/>
+                            <button class="oe_stat_button" string="Print Receipt" icon="fa-print" name="action_print_receipt" type="object" attrs="{'invisible': [('state','=','d')]}"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                            <div>
+                                <field name="receipt_no" string="Receipt No"/>
+                            </div>
+                        </div>
+                        <group class="nomrh" invisible="not context.get('receipt', False)">
+                            <field name="shipping_type" nolable="1" widget="radio" options="{'horizontal': true, 'nolable': true}"/>
+                        </group>
+                        <group class="nomrh" attrs="{'invisible': [('shipping_type','!=',4)]}">
+                            <group>
+                                <field name="branch_to_id" domain="[('city_id', '=', city_id), ('id', '!=', branch_id)]"  attrs="{'required': [('shipping_type', '=', 4)]}"/>
+                            </group>
+                        </group>
+                        
+                        <group class="nomrh">
+                            <group><field name="move_id" readonly="context.get('receipt', False)" force_save="1"/></group>
+                            <group><field name="receipt_date" attrs="{'readonly':[('can_change_date', '=', False)]}"/></group>
+                            <group><field name="city_id" readonly="1"/></group>
+                            <group><field name="branch_id" readonly="1"/></group>
+                            <group><field name="ffrom" attrs="{'required':[('shipping_type', '&lt;', 3)], 'invisible':[('shipping_type', '&gt;', 2)]}"/></group>
+                            <group><field name="to" attrs="{'required':[('shipping_type', 'in', (1,3))], 'invisible':[('shipping_type', 'in', (2,4))]}"/></group>
+                        </group>
+                        <div invisible="context.get('receipt', False)">
+                        <separator colspan="4" string="Client Info"/>
+                        <group invisible="1"><field name="is_comp" readonly="1"/></group>
+                        
+                        <!-- indevedual -->
+                        <group attrs="{'invisible': [('is_comp', '=', True)]}" class="nomrh">
+                            <group>
+                                <field name="partner_id" string="Sender/ssn" domain="[('is_company', '=', False ), ('customer', '=', True)]" context="{'form_view_ref': 'tms.view_res_partner_quick_create', 'is_trans': True, 'default_is_trans': True}" options="{'no_quick_create': True}" attrs="{'required': [('is_comp', '=', False)]}"/></group>
+                            <group><field name="sender_ssn"/></group>
+                            <group><field name="sender_mobile"/></group>
+                        </group>
+                        
+                        <!-- company -->
+                        <group attrs="{'invisible': [('is_comp', '=', False)]}" class="nomrh">
+                            <group><field name="c_partner_id" string="Sender" domain="[('is_company', '=', True ), ('customer', '=', True)]" context="{'ssn': 1}" options="{'no_quick_create': True, 'no_create':1, 'no_open':1}" attrs="{'required': [('is_comp', '=', True)]}"/></group>
+                            <group><field name="responsible_id" staring="Name" domain="[('parent_id', '=', c_partner_id )]" options="{'no_quick_create': True, 'no_create':1, 'no_open':1}"/></group>
+                            <group><field name="shipper_id" domain="[('is_company', '=', True )]" options="{'no_quick_create': True, 'no_create':1, 'no_open':1}" attrs="{'required': [('is_comp', '=', True)]}"/></group>
+                            <group>
+                                <field name="contract_no" attrs="{'invisible': [('use_contract', '=', False)]}"/>
+                            </group>
+                        </group>
+                        
+                        <group class="nomrh">
+                            <group><field name="same_sender"/></group><group/>
+                            <group><field name="resv_id" string="Receiver Id"/></group>
+                            <group><field name="resv_name" required="not context.get('receipt', False)"/></group>
+                            <group><field name="resv_mobile"/></group>
+                            <group><field name="resv_country"/></group>
+                            <group><field name="amove_id" readonly="1" groups="account.group_account_user"/></group>
+                        </group>
+                        </div>
+                        <notebook>
+                            <page string="Car Details">
+                                <group invisible="context.get('receipt', False)" class="nomrh">
+                                        <group>
+                                            <field name="car_id" string="Customs Card" attrs="{'invisible':[('is_card','=',False)]}" required="not context.get('receipt', False)"/>
+                                            <field name="car_id" widget="plate" class="xx_plate" string="Plate Number" attrs="{'invisible':[('is_card','=',True)]}" required="not context.get('receipt', False)"/>
+                                        </group>
+                                        <group><field name="is_card"/></group>
+                                        <group><field name="brand_id" required="not context.get('receipt', False)"/></group>
+                                        <group><field name="model_id" required="not context.get('receipt', False)"/></group>
+                                        <group><field name="body_no"/></group>
+                                        <group><field name="issue_year"/></group>
+                                        <group><field name="color"/></group>
+                                        <group><field name="arrival_date" readonly="1"/></group>
+                                </group>
+                                <seprator label="Expense and Payments"/>
+                                <group class="nomrh">
+                                    <group><field name="vehicle_id" 
+                                        context="{'show_driver': True}" 
+                                        options="{'no_create': true, 'no_open': true}"/>
+                                            
+                                    </group>
+                                    <group><field name="driver_id" readonly="1" force_save="1" options="{'no_create': true, 'no_open': true}"/></group>
+                                    <group><field string="Trans Price" name="amount" attrs="{'required':[('is_receipt','=', False)], 'readonly': [('can_edit', '=', False)]}"/></group>
+                                    <group><field name="driver_expense" required="1" attrs="{'readonly': [('can_edit', '=', False)]}"/></group>
+                                    <group><field name="other_expense" attrs="{'readonly': [('can_edit', '=', False)]}"/></group>
+                                    <group><field name="total_expense" forc_save="1"/></group>
+                                </group>
+                                <group>
+                                    <field name="comment"/>
+                                </group>
+                                
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_read"/>
+                                    <field name="amount_tax"/>
+                                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                                    <field name="residual" force_save="1" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'd')]}"/>
+                                    <field name="reconciled" invisible="1" force_save="1"/>
+                                </group>
+                                
+                            </page>
+                            <page string="Payments">
+                                <group>
+                                    <div>
+                                        <field name="trans_payment_ids" readonly="1">
+                                            <tree>
+                                                <field name="reference"/>
+                                                <field name="date"/>
+                                                <field name="balance" sum="balance"/>
+                                                <field name="journal_id"/>
+                                                <field name="payment_branch_id"/>
+                                                <field name="type"/>
+                                                <field name="create_uid"/>
+                                                <button name="action_print_voucher" type="object" icon="fa-print"/>
+                                                <button name="action_show_cancel_payment" type="object" attrs="{'invisible':[('can_cancel', '=', False)]}" icon="fa-minus-circle" style="color:red;"/>
+                                                <button name="action_show_edit_payment" type="object" attrs="{'invisible':[('can_edit', '=', False)]}" icon="fa-edit"/>
+                                                <button name="action_cancel_entry" string="Cancel Entry" type="object" icon="fa-trash-o" style="color:red;" 
+                                                    confirm="Are sure you want to delete payment?" groups="account.group_account_manager" attrs="{'invisible': [('has_entry', '=', False)]}"/>
+                                                <field name="can_cancel" invisible="1"/>
+                                                <field name="can_edit" invisible="1"/>
+                                                <field name="has_entry" invisible="1"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                </group> 
+                            </page>
+                            
+                        </notebook>
+                        <field name="create_uid" class="pull-right" readonly="1" string="Created By"/>
+                    </sheet>
+                    <div groups="tms.group_tms_show_activity">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="activity_ids" widget="mail_activity"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_itrans_tree" model="ir.ui.view">
+            <field name="name">tms.itrans.tree</field>
+            <field name="model">tms.itrans</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Internal Transport">
+                    <field name="receipt_no"/>
+                    <field name="car_id"/>
+                    <field name="partner_id"/>
+                    <field name="branch_id"/>
+                    <field name="receipt_date"/>
+                    <field name="state"/>
+                    <field name="amount_total"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_itrans_filter" model="ir.ui.view">
+            <field name="name">tms.itrans.com.filter</field>
+            <field name="model">tms.itrans</field>
+            <field name="arch" type="xml">
+                <search string="Search Receipt">
+                    
+                    <field name="receipt_no" string="Receipt Number" filter_domain="['|',('receipt_no','=',self),('name','=',self)]"/>
+                    <field name="car_id" string="Car Id" filter_domain="[('car_id','ilike',self)]"/>
+                    <field name="partner_id" filter_domain="['|', '|', ('partner_id','ilike',self), ('partner_id.ssn','ilike',self), ('partner_id.mobile','ilike',self)]"/>
+                    <separator/>
+                    <filter name="x1" string="Draft" domain="[('state','=','d')]"/>
+                    <filter name="x2" string="Open" domain="[('state','=','o')]"/>
+                    <filter name="x3" string="Paid" domain="[('state','=','p')]"/>
+                    <filter name="x4" string="Cancelled" domain="[('state','=','c')]"/>
+                    <separator/>
+                    <filter name="x5" string="Receipt in 24H" domain="[('receipt_date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d') )]"/>
+                    <filter name="x6" string="Receipt in 7 Daya" domain="[('receipt_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d') )]"/>
+                    <filter name="r_30_days" string="Receipt in 30 Daya" domain="[('receipt_date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d') )]"/>
+                    <separator/>
+                    <field name="city_id"/>
+                    <field name="branch_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="City" name="city_id" context="{'group_by':'city_id'}"/>
+                        <filter string="Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                        <filter string="States" name="state" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>        
+        <record id="action_tms_itrans" model="ir.actions.act_window">
+            <field name="name">Internal Transport</field>
+            <field name="res_model">tms.itrans</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_itrans_tree"/>
+            <field name="search_view_id" ref="view_tms_itrans_filter"/>
+            <field name="context">{'search_default_r_30_days':'1', 'current': True, 'edit': 1}</field>
+        </record>
+        
+        <record id="action_tms_all_itrans" model="ir.actions.act_window">
+            <field name="name">All Internal Transport</field>
+            <field name="res_model">tms.itrans</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_itrans_tree"/>
+            <field name="search_view_id" ref="view_tms_itrans_filter"/>
+            <field name="context">{'search_default_r_30_days':'1', 'edit': 1}</field>
+        </record>
+
+        
+        <!-- Add action entry in the Action Menu for Partners -->
+        <act_window id="copy_itrans_action"
+            name="Copy"
+            src_model="tms.itrans"
+            res_model="tms.itrans"
+            view_type="form"
+            view_mode="form"
+            context="{'copy':1, 'edit': 1}"
+            key2="itrans_copy_action_multi"
+            target="current"/>
+            
+            
+    <record id="view_tms_itrans_branch_pivot" model="ir.ui.view">
+        <field name="name">tms.itrans.branch.pivot</field>
+        <field name="model">tms.itrans</field>
+        <field name="arch" type="xml">
+            <pivot string="itranss">
+                <field name="branch_id" type="row"/>
+                <field name="receipt_date" type="col"/>
+                <field name="amount" type="measure"/>
+                <field name="amount_tax" type="measure"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+            
+    <record id="action_tms_itrans_branch_pivot" model="ir.actions.act_window">
+        <field name="name">ITrans Analysis</field>
+        <field name="res_model">tms.itrans</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_tms_itrans_branch_pivot"/>
+        <field name="search_view_id" ref="tms.view_tms_itrans_filter"/>
+        <field name="domain">[('state','!=', 'c')]</field>
+        <field name="context">{'search_default_r_30_days':'1', 'search_default_group_branch_id':1, 'edit': 1}</field>
+    </record>
+    
+        
+</odoo>

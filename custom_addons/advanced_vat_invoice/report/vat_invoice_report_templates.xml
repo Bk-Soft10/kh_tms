@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Template for VAT invoice report-->
+    <template id="vat_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+
+                    <style>
+                         .header {
+                          margin-top: 100px;
+                          padding-top: 30;
+                          }
+
+        /* Reset the margin or padding of the body to ensure no space */
+                         .page {
+                          margin-top: 300px;
+                          padding-top: 0;
+                          }
+
+                          .section-date  {
+                           padding: 5px;
+                           border-bottom: 2px solid #000; /* Black underline for invoice details */
+                           text-align: right;
+                          }
+                    </style>
+
+<div class="header">
+                    <div  style="font-family: 'Segoe UI', sans-serif;"  >
+                        <h4>
+                            <center>
+                                <span  class="text-right">فاتورة ضريبية
+                                </span>
+                            </center>
+
+                        </h4>
+                    </div>
+                     <div style="border: 3px solid black;"> </div>
+
+</div>
+                    <div class="page">
+
+                     <div class="row mt32 mb32">
+                          <div class="col-1"></div>
+                          <div class="col-3">
+                                                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"  alt="Company Logo"/>
+</div>
+                         <div class="col-8">
+                        <table style="width: 100%; direction: rtl; text-align: right;font-size: 16px;font-family: 'Segoe UI', sans-serif;">
+                            <tr>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <span>رقم الفاتورة</span>
+                                </td>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <t t-esc="doc.name"/>
+                                </td>
+                                <td width="40%"
+                                    style="font-weight: bold;text-align:left;padding:1pt">
+                                </td>
+                            </tr>
+                             <tr>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <span>    تاريخ الفاتورة</span>
+                                </td>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                     <t t-esc="doc.invoice_date"/>
+                                </td>
+                                <td width="40%"
+                                    style="font-weight: bold;text-align:left;padding:1pt">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <span>        تاريخ الاستحقاق</span>
+                                </td>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <t t-esc="doc.invoice_payment_term_id.name"/>
+                                </td>
+                                <td width="40%"
+                                    style="font-weight: bold;text-align:left;padding:1pt">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="section-date" width="16%" style="text-align: right;">
+                                    <span>        تاريخ التوريد </span>
+                                </td>
+                                <td class="section-date" width="20%" style="text-align: right;">
+                                    <t t-esc="doc.delivery_date_from"/> الي
+                                     <t t-esc="doc.delivery_date_to"/>
+                                </td>
+                                 <td width="20%"
+                                    style="font-weight: bold;text-align:left;padding:1pt">
+                                </td>
+
+                            </tr>
+                        </table>
+                         </div>
+                     </div>
+                    <br/>
+                    <div class="row mt32 mb32">
+                         <div class="col-2"> <!-- style="margin-top: -8pt; padding-left:20pt;" -->
+                            <img t-attf-src="data:image/png;base64, {{doc.qr}}"/>
+                        </div>
+
+                    <!--     <div class="col-10" style="color:black; "> -->
+
+             <!--                <div class="row mt32 mb32" style="display: flex; justify-content: space-between; direction: rtl; text-align: right;font-size: 12px;font-family: 'Segoe UI', sans-serif;"> -->
+    <!-- Client Information -->
+    <div  class="col-5">
+
+
+                        <table style="width: 100%; direction: rtl; text-align: right;font-size: 14px;font-family: 'Segoe UI', sans-serif;">
+                            <tr>
+                                <td   width="16%" style="text-align: right;">
+                                <p> الفاتورة من </p>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td   width="16%" style="text-align: right;">
+                                    <span t-esc="doc.company_id.name" style="font-size:  16px" /> <!-- style="font-size:  25px;" -->
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span>     <strong>السجل التجاري:</strong> <t t-esc="doc.company_id.commercial_registration"/></span>
+                                </td>
+                            </tr>
+                            <!--
+                            <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span>     <strong>   رقم الوحدة:</strong> <t t-esc="doc.company_id.company_registry"/></span>
+                                </td>
+                            </tr>
+                            -->
+                            <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span>     <strong>العنوان:</strong> <t t-esc="doc.company_id.street"/> , <t t-esc="doc.company_id.city"/></span>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td   width="16%" style="text-align: right;">
+                                    <span>   <t t-esc="doc.company_id.state_id.name"/>,<t t-esc="doc.company_id.country_id.name"/> ,    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span> <t t-esc="doc.company_id.zip"/></span>
+                                </td>
+                            </tr>
+                              <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span> <strong>الرقم الضريبي:</strong> <t t-esc="doc.company_id.vat"/> </span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+
+
+    </div>
+
+    <!-- Invoice Details -->
+    <div class="col-5">
+
+        <table style="width: 100%; direction: rtl; text-align: right;font-size: 14px;font-family: 'Segoe UI', sans-serif;">
+                            <tr>
+                                <td   width="16%" style="text-align: right;">
+                                <p> الفاتورة الي </p>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td style="text-align: right;">
+                                    <span t-esc="doc.partner_id.name" style="font-size:  16px"  /> <!-- style="font-size:  25px;" -->
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span>     <strong>السجل التجاري:</strong> <t t-esc="doc.partner_id.commercial_registration"/></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span>     <strong>العنوان:</strong> <t t-esc="doc.partner_id.street"/> , <t t-esc="doc.partner_id.city"/></span>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td   width="16%" style="text-align: right;">
+                                    <span>   <t t-esc="doc.partner_id.state_id.name"/>,<t t-esc="doc.partner_id.country_id.name"/> ,    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span> <t t-esc="doc.partner_id.zip"/></span>
+                                </td>
+                            </tr>
+                               <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span>    <strong>رقم التلفون:</strong><t t-esc="doc.partner_id.phone"/></span>
+                                </td>
+                            </tr>
+                              <tr>
+                                <td  width="16%" style="text-align: right;">
+                                    <span> <strong>الرقم الضريبي:</strong> <t t-esc="doc.partner_id.vat"/> </span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+
+
+    </div>
+<!-- </div> -->
+
+
+
+                  <!--      </div> -->
+
+                    </div>
+<br></br>
+   <div style="border: 1px solid black;"> </div>
+<br></br>
+                    <table style="border:2pt solid grey;width:100%; height: 10px;color:black; margin-top:10pt;font-size: 12px;font-family: 'Segoe UI', sans-serif;"
+                           class="table-condensed table-sm">
+                        <tr>
+                            <td style="padding:2pt;margin:0pt;font-weight: bold;text-align:center;">
+                                <span class="text-right arabic">
+                                      البنود
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table  style="border:2pt solid grey;width:100%;color:black; margin-top:0pt; color:black; font-size: 12px;font-family: 'Segoe UI', sans-serif;"
+                           class="table-condensed">
+                        <thead>
+                            <tr style="background-color:#DCDCDC">
+
+
+                                <td style="border:2pt solid grey;text-align:center;padding:2pt;">
+                                    <span class="sub_total">
+                                        المجموع
+                                    </span>
+                                </td>
+                                 <td style="border:2pt solid grey;text-align:center; width:10%;padding:2pt">
+                                    <span class="amount">مبلغ الضريبة</span>
+                                </td>
+                                 <td style="border:2pt solid grey;text-align:center;padding:2pt;width:8%">
+                                    <span class="tax_rate">نسبة الضريبة</span>
+                                </td>
+                                  <td style="border:2pt solid grey;text-align:center; width:10%;padding:2pt">
+                                    <span class="discount">خصومات</span>
+                                </td>
+                                <td style="border:2pt solid grey;text-align:center;padding:2pt;">
+                                    <span class="tax">المبلغ الخاضع للضريبة
+                                    </span>
+                                </td>
+                                  <td style="border:2pt solid grey;text-align:center;padding:2pt;width:7%">
+                                    <span class="qty">الكمية</span>
+                                </td>
+                                <td style="border:2pt solid grey;text-align:center;padding:2pt;">
+                                    <span class="price">سعر الوحدة</span>
+                                </td>
+                                <td width="20%"
+                                    style="border:2pt solid grey;text-align:center;padding:2pt; ">
+                                    <span class="product">تفاصيل السلع أو
+                                        الخدمات
+                                    </span>
+                                </td>
+
+                            </tr>
+                        </thead>
+                        <t t-set="tax_total" t-value="0"/>
+                        <t t-set="discount_total" t-value="0"/>
+                        <t t-set="index" t-value="0"/>
+                        <tbody class="invoice_line">
+                            <tr t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="index" t-value="index + 1"/>
+                                <t t-set="line_tax_total" t-value="0"/>
+                                <t t-foreach="line.tax_ids" t-as="tax">
+                                    <t t-set="tax_total"
+                                       t-value="tax_total + line.price_subtotal* tax.amount/100"/>
+                                    <t t-set="line_tax_total"
+                                       t-value="line_tax_total + tax.amount"/>
+                                </t>
+                                <t t-set="discount_total"
+                                   t-value="discount_total + ((line.price_unit * line.quantity) - line.price_subtotal)"/>
+
+                                <td style="border-right:2pt solid grey;text-align:right;padding:3pt">
+                                    <span t-field="line.price_subtotal"/>
+                                </td>
+
+                                <td style="padding:2pt;border-right:2pt solid grey;text-align:right;">
+                                    <t t-set="line_tax_total"
+                                       t-value="round(line.price_subtotal*line_tax_total/100,2)"/>
+                                    <sapn t-esc="line_tax_total"/>
+                                </td>
+
+
+                                 <td style="border-right:2pt solid grey;padding:2pt;text-align:center;">
+                                    <t t-foreach="line.tax_ids" t-as="tax">
+                                        <span t-esc="'%.2f'%(tax.amount)"/>%
+                                    </t>
+                                    <span t-if="not line.tax_ids">0.0 %</span>
+                                </td>
+
+                                <td style="border-right:2pt solid grey;text-align:right;padding:3pt;">
+                                    <span t-field="line.discount"/>%
+                                </td>
+                                <td style="padding:2pt;border-right:2pt solid grey;text-align:right;">
+                                    <sapn t-esc="line.price_unit * line.quantity"/>
+                                </td>
+                                <td style="border-right:2pt solid grey;text-align:center;padding:3pt">
+                                    <t t-if="index == 1">
+                                        <span t-esc="doc.hangersation_quantity"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-esc="line.quantity"/>
+                                    </t>
+                                </td>
+                                <td style="border-right:2pt solid grey;text-align:right;padding:3pt">
+                                    <t t-if="index == 1">
+                                        <span t-esc="doc.hangersation_price"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="line.price_unit"/>
+                                    </t>
+                                </td>
+
+                                <!--<td style="border-right:2pt solid grey;text-align:center;padding:3pt">
+                                    <span t-esc="doc.hangersation_quantity"/> / '%.2f %s '%(line.quantity,line.product_uom_id.name)
+                                </td>
+                                <td style="border-right:2pt solid grey;text-align:right;padding:3pt">
+                                    <span t-field="doc.hangersation_price"/>/ line.price_unit
+                                </td>  -->
+
+                                <td style="border-right:2pt solid grey;padding:3pt">
+                                    <span t-field="line.name"/>
+                                    <br/>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- -->
+                    <br/>
+                    <table style="font-size: 12px;font-family: 'Segoe UI', sans-serif;">
+                        <thead>
+                            <tr>
+                                <td width="40%"
+                                    style="font-weight: bold;text-align:left;padding:1pt">
+
+                                </td>
+                                <td   width="40%"
+                                    style="text-align:right;padding:2pt">
+                                    <span t-esc="doc.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+
+                                </td>
+                                <td class="section-date" width="40%"
+                                    style="text-align:right;padding:2pt">إجمالي
+                                    المبلغ
+                                    الخاضع للضريبة
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;text-align:left;padding:3pt">
+
+                                </td>
+                                <td style="text-align:right;padding:3pt">
+                                 <span t-esc="tax_total"  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}" />
+                                </td>
+                                <td class="section-date"
+                                    style="text-align:right;padding:3pt">
+                                   %   ضريبة القيمة المضافة  15
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;text-align:left;padding:3pt">
+                                </td>
+                                <td   style="text-align:right;padding:3pt">
+
+                                   <span t-esc="doc.amount_total"  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
+                                <td class="section-date"
+                                    style="text-align:right;padding:3pt">
+                                    إجمالي المبلغ شامل الضريبة
+                                </td>
+                            </tr>
+
+                            <!--
+                            <tr>
+                                <td style="font-weight: bold;text-align:left;padding:3pt">
+                                </td>
+ <td  style="text-align:right;padding:3pt">
+                                 <t t-if="doc.payment_state != 'invoicing_legacy'">
+                                                    <t t-set="payments_vals" t-value="doc.sudo().invoice_payments_widget and doc.sudo().invoice_payments_widget['content'] or []"/>
+                                                    <t t-foreach="payments_vals" t-as="payment_vals">
+
+                                <t t-if="payment_vals['is_exchange'] == 0"  >
+                                    <span t-out="payment_vals['amount'] or 0.0" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'>20.00</span>
+                              </t>
+                                 </t>
+                             </t>
+                                </td>
+                                <td class="section-date"
+                                    style="text-align:right;padding:3pt">
+                                    المدفوع - المحفظة
+                                </td>
+                            </tr>
+                            -->
+
+                            <t t-if="doc.payment_state != 'invoicing_legacy'">
+    <t t-set="payments_vals" t-value="doc.sudo().invoice_payments_widget and doc.sudo().invoice_payments_widget['content'] or []"/>
+    <t t-foreach="payments_vals" t-as="payment_vals">
+        <t t-if="payment_vals['is_exchange'] == 0 and payment_vals['amount']">
+            <tr>
+                <td style="font-weight: bold;text-align:left;padding:3pt">
+                </td>
+                <td style="text-align:right;padding:3pt">
+                    <span t-out="payment_vals['amount'] or 0.0"
+                          t-options='{"widget": "monetary", "display_currency": doc.currency_id}'>20.00</span>
+                </td>
+                <td class="section-date" style="text-align:right;padding:3pt">
+                    المدفوع - المحفظة
+                </td>
+            </tr>
+        </t>
+    </t>
+</t>
+
+                            <tr>
+                                <td style="font-weight: bold;text-align:left;padding:3pt">
+                                </td>
+                                <td   style="text-align:right;padding:3pt">
+                              <span t-esc="doc.amount_residual"  t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
+                                <td class="section-date"
+                                    style="text-align:right;padding:3pt">اجمالي
+                                    المبلغ المستحق
+                                </td>
+                            </tr>
+
+
+
+                        </thead>
+                    </table>
+                    <br/>
+
+
+                      <hr style="border: 1px solid black;" />
+
+                      <div class="row mt32 mb32">
+                          <div class="col-6"></div>
+                          <div class="col-6" style="direction: rtl; text-align: right; font-size: 10px;font-family: 'Segoe UI', sans-serif;">
+                          <strong>بيانات المستفيد :</strong>
+                             <div t-if="doc.narration" style="margin-top: 5px;">
+                            <p t-field="doc.narration" style="white-space: pre-wrap;"/>
+                           </div>
+                         </div>
+
+</div>
+
+
+
+
+                    <!-- -->
+ </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_tms_dashboard_custom" model="ir.actions.client">
+        <field name="name">TMS Dashboard</field>
+        <field name="tag">tms_dashboard_custom_tag</field>
+    </record>
+
+    <template id="tms_dashboard_trips">
+        <style>
+            .dash-item.trip {
+               padding-left: 15px;
+               padding-right: 15px;
+           }
+            .circle-tile {
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            @media (min-width: 768px){
+                .circle-tile {
+                    margin-bottom: 30px;
+                }
+            }
+            .circle-tile-heading {
+                position: relative;
+                width: 80px;
+                height: 80px;
+                margin: 0 auto -40px;
+                border: 3px solid rgba(255,255,255,0.3);
+                border-radius: 100%;
+                color: #fff;
+                transition: all ease-in-out .3s;
+            }
+            .circle-tile-heading .fa {
+                line-height: 80px;
+            }
+            .circle-tile-content {
+                padding-top: 50px;
+            }
+            .circle-tile-description {
+                text-transform: uppercase;
+            }
+            .text-faded {
+                color: rgba(255,255,255,0.7);
+            }
+            .circle-tile-number {
+                padding: 5px 0 15px;
+                font-size: 26px;
+                font-weight: 700;
+                line-height: 1;
+            }
+            .circle-tile-footer {
+                display: block;
+                padding: 5px;
+                color: rgba(255,255,255,0.5);
+                background-color: rgba(0,0,0,0.1);
+                transition: all ease-in-out .3s;
+            }
+            .tbg-branch{
+                background: #34495e;
+            }
+            .tbg-road{
+                background: #18846f;
+            }
+            .tbg-trans{
+                background: #0766ca;
+            }
+            .tbg-arrival{
+                background: #d78236;
+            }
+            .tbg-route{
+                background: #8f8f8f;
+            }
+            .rotate175{
+                transform: rotate(-175deg);
+            }
+            .t_row{
+                display: inline-block;
+                width: 100%;
+                margin-top: -3px;
+            }
+            .hx2.hx,
+            .hx2.bord-right  {
+                border-color:#6e6e6e;
+                margin-bottom: 0;
+                border-bottom: none;
+            }
+            .hidden{
+                display: none;
+            }
+            
+        </style>
+        <div class="dash-row flex">
+            <t t-foreach="tkys" t-as="state">
+                <t t-if="state!='a'">
+                    <t t-value="trips[state]" t-set-slot="item"/>
+                    <div class="dash-item trip">
+                        <div class="circle-tile">
+                            <a href="#" t-att-state="state" action="open_trips">
+                                <div t-att-class="'circle-tile-heading tbg-' + item[3]">
+                                    <i t-att-class="'fa fa-fw fa-3x fa-'+ item[4]"/>
+                                </div>
+                            </a>
+                            
+                            <div t-att-class="'circle-tile-content tbg-'+item[3]">
+                                <t t-if="state=='b'">
+                                    <t t-value="trips['a']" t-set-slot="itema"/>
+                                    <div class="t_row">
+                                        <a class="hx2 hx bord-right" href="#" state="b" action="open_trips">
+                                            <div class="circle-tile-description text-faded">
+                                                <t t-esc="item[2]"/>
+                                            </div>
+                                            <div class="circle-tile-number text-faded">
+                                                <t t-esc="item[0]"/>
+                                            </div>
+                                        </a>
+                                        <a class="hx2 hx" href="#" state="a" action="open_trips">
+                                            <div class="circle-tile-description text-faded">
+                                                <t t-esc="itema[2]"/>
+                                            </div>
+                                            <div class="circle-tile-number text-faded">
+                                                <t t-esc="itema[0]"/>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </t>
+                                <t t-if="state!='b'">
+                                    <div class="circle-tile-description text-faded">
+                                        <t t-esc="item[2]"/>
+                                    </div>
+                                    <div class="circle-tile-number text-faded">
+                                        <t t-esc="item[0]"/>
+                                    </div>
+                                </t>
+                                <a href="#" t-att-state="state" action="open_trips" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"/></a>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </template>   
+
+    <template id="tms.tms_dashboard_template">
+        <style>
+            .o_control_panel{
+                display: none;
+            }
+            #tms_dashboard{
+              background: #e8e8e8;
+            }
+            @media only screen and (min-width: 768px){
+               .tms_dashboard-wrapper {
+                   padding: 20px;
+               }
+            }
+            
+            .dash-row{
+               width:100%;
+               display:inline-block;
+            }
+            .dash-row.flex {
+              display: inline-flex;
+              flex-wrap: wrap;
+            }
+            
+            .dash-row:after,
+            .dash-row:before{
+                content: " ";
+                display: table;
+            }
+            .dash-row h3, .dash-row h4{
+              font-weight:bold;
+              color: inherit;
+              margin-top: 9px;
+              margin-bottom: 12px;
+            }
+            .row-table.row-flush {
+              height: 80px;
+            }
+            
+            .dash-item {
+              display: inline-block;
+              position: relative;
+              padding: 5px;
+              margin-top: 10px;
+              width: 100%;
+              float:left;
+            }
+            
+            @media (min-width: 400px){
+              .dash-item {
+                  width: 50%;
+              }
+              .dash-item.trip {
+                  width: 50%;
+              }
+            }
+            
+            
+            @media (min-width: 748px){
+              .dash-item {
+                  width: 33%;
+              }
+              .dash-item.trip {
+                  width: 50%;
+              }
+            }
+            
+            @media (min-width: 992px){
+              .dash-item {
+                  width: 20%;
+                  
+              }
+              .dash-item.trip {
+                  width: 20%;
+              }
+            }
+            .mb-sm {
+                margin-bottom: 5px !important;
+            }
+            .dash-item .panel{
+                display: inline-block;
+                width: 100%;
+                margin-bottom: 20px;
+                background-color: #fff;
+                border: 1px solid transparent;
+                border-radius: 0;
+                -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+            }
+            .dash-icon {
+               display: table-cell;
+               table-layout: fixed;
+               vertical-align: middle;
+               padding-left: 4px;
+               padding-right: 0;
+               position: relative;
+               height: 100%;
+               color:#fff;
+            }
+            .dash-icon em{
+              padding-top: 50%;
+            }
+            .a-footer{
+                font-size: 16px;
+                font-weight: 500;
+            }
+            .a-footer .fa{
+                margin-left: 5px;
+            }
+            .dash-heading{
+                  background: #7c868a;
+                  padding: 1px;
+                  padding-left: 20px;
+                  color: #fff;
+            }
+            .mb10 {
+                padding-bottom: 10px;
+            }
+            .bg-draft {
+                background: #ff902b;
+            }
+            .bg-branch {
+                background: #074586;
+            }
+            .bg-trans {
+                background: #3d9bff;
+            }
+            .bg-road {
+                background: #b1a524;
+            }
+            .bg-arrival {
+                background: #ff902b;
+            }
+            .bg-posted {
+                background: #24b145;
+            }
+            .w1x {
+                width: 25%;
+                float: left;
+                position: relative;
+            }
+            .w2x {
+                width: 75%;
+                float: left;
+                position: relative;
+            }
+            .hx {
+                width: 50%;
+                display:inline-block;
+                float:left;
+                border-bottom: 1px solid #cecece;
+                margin-bottom: 4px;
+            }
+            .spnex{
+               font-size:10px;
+            }
+            .bord-right{
+                border-right: 1px solid #cecece;
+            }
+            
+            .dash-row .o_list_buttons{
+                float:right;
+                margin-top:8px;
+                margin-right:10px;
+            }
+            .dash-row .dash-heading h3 {
+                display: inline-block;
+            }
+            
+            #sash-search-box{
+                width: 200px;
+                height: 26px;
+                background-color: #ffffff;
+                color:#000;
+                border: 1px solid #cccccc;
+                border-radius: 13px;
+                display: inline-block;
+                padding: 2px 12px;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+                float: left;
+            }
+            .dash-heading a{
+                color: #fff;
+                margin-left: 4px;
+                margin-right: 4px;
+                font-weight: bold;
+                display: flex;
+                padding-right: 3px;
+                direction: rtl;
+                float: left;
+                border: 1px #dbdbdb  solid;
+                padding: 2px 8px;
+                border-radius: 12px;
+            }
+            .dash-heading a.dash-progress{
+                margin-top: 1px;
+                height: 20px;
+                font-weight: normal;
+                border-radius:0;
+                border: none;
+                cursor: pointer;
+            }
+            .dash-progress .progress{
+                margin: 2px 10px 0 0; 
+                border-radius: 10px;
+                height: 16px;
+                width:120px;
+            }
+            .bg-red {
+                background: #da1414;
+            }
+            .popover{
+                max-width:550px;
+            }
+            .text-center {
+               text-align: center;
+            }
+            .commission-table th{
+                background: #000!important;
+                color: #fff;
+            }
+            .commission-table td.text-center {
+                background: #ededed;
+                padding: 3px;
+                text-align: center;
+            }
+            
+        </style>
+        <div classs="tms_dashboard-wrapper" id="tms_dashboard">
+        <t t-value="state.draft_drafti" t-set-slot="drafti"/>
+        <t t-value="state.draft_draftc" t-set-slot="draftc"/>
+        <div class="dash-row">
+            <div class="dash-heading">
+                <h3>Personal Receipts</h3>
+                <div class="o_list_buttons">
+                    <input type="text" id="sash-search-box" placeholder="ابحث عن سند او رحلة"/>
+                    <t t-if="drafti &gt; 0">
+                        <a href="#" type="button" action="open_receipts_i" state="d">
+                            <i class="fa fa-exclamation-triangle" style="color: #fffa2b;font-size: 18px;"/>
+                            <t t-esc="drafti"/> &amp;nbsp; Drafts
+                        </a>
+                    </t>
+                    <t t-if="create_itans">
+                        <a href="#" type="button" action="create_itrans" state="n">
+                            New Internal Trans 
+                        </a>
+                    </t> 
+                    <t t-if="create_receipt">
+                        <a href="#" type="button" action="open_receipts_i" state="n">
+                            New Personal Receipt
+                        </a>
+                    </t>
+                </div>
+            </div>
+            <t t-foreach="rkys" t-as="dash">
+                <t t-value="receiptsi[dash]" t-set-slot="item"/>
+                <t t-value="receiptstoi[dash]" t-set-slot="item2"/>
+                <div class="dash-item">
+                  <div class="panel widget mb0 b0">
+                      <div class="row-table row-flush">
+                          <div t-att-class="'w1x text-center dash-icon bg-'+ item[3]">
+                              <em t-att-class="'fa-2x fa fa-'+ item[4] "/>
+                          </div>
+                          <div class="w2x">
+                              <div class="text-center">
+                                  <t t-if="dash=='t'">
+                                    <a href="#" class="hx d-link" action="open_receipts_i" style="width:100%" t-att-state="item[1]" to="1">
+                                          <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                          <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                    </a>
+                                  </t>
+                                  <t t-if="dash!='t'">
+                                      <a href="#" class="hx d-link bord-right" action="open_receipts_i" t-att-state="item[1]">
+                                          <i class="fa fa-arrow-up" style="margin-right: 2px;"/><span class="spnex">Outgoing</span>
+                                          <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                      </a>
+                                      <a href="#" class="hx d-link" action="open_receipts_i" t-att-state="item2[1]" to="1">
+                                          <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                          <h4 class="mb-sm"><t t-esc="item2[0]"/></h4>
+                                      </a>
+                                  </t>
+                                  <strong class="text-muted"><t t-esc="item[2]"/></strong>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </t>
+        </div>
+        <div class="dash-row">
+            <div class="dash-heading">
+                
+                <h3>Company Receipts</h3>
+                <div class="o_list_buttons">
+                    <t t-if="create_receipt and commission">
+                        <t t-call="tms.tms_dashboard_commision_progress"/>
+                    </t>
+                    <t t-if="draftc &gt; 0">
+                        <a href="#" type="button" action="open_receipts_c" state="d">
+                            <i class="fa fa-exclamation-triangle" style="color: #fffa2b;font-size: 18px;"/>
+                            <t t-esc="draftc"/> &amp;nbsp; Drafts
+                        </a>
+                    </t>
+                    <t t-if="create_trip">
+                        <a href="#" type="button" action="create_trip" state="n">
+                            New Trip
+                        </a>
+                    </t>
+                    <t t-if="create_receipt">
+                        <a href="#" type="button" action="open_receipts_c" state="n">
+                            New Company Receipt
+                        </a>
+                    </t>
+                </div>
+                
+            </div>
+            <t t-foreach="rkys" t-as="dash">
+                <t t-value="receiptsc[dash]" t-set-slot="item"/>
+                <t t-value="receiptstoc[dash]" t-set-slot="item2"/>
+                <div class="dash-item">
+                    <div class="panel widget mb0 b0">
+                        <div class="row-table row-flush">
+                            <div t-att-class="'w1x text-center dash-icon bg-'+ item[3]">
+                                <em t-att-class="'fa-2x fa fa-'+ item[4] "/>
+                            </div>
+                            <div class="w2x">
+                                <div class="text-center">
+                                    <t t-if="dash=='t'">
+                                        <a href="#" class="hx d-link" action="open_receipts_c" style="width:100%" t-att-state="item[1]" to="1">
+                                            <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                            <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                        </a>
+                                    </t>
+                                    <t t-if="dash!='t'">
+                                        <a href="#" class="hx d-link bord-right" action="open_receipts_c" t-att-state="item[1]">
+                                            <i class="fa fa-arrow-up" style="margin-right: 2px;"/><span class="spnex">Outgoing</span>
+                                            <h4 class="mb-sm"><t t-esc="item[0]"/></h4>
+                                        </a>
+                                        <a href="#" class="hx d-link" action="open_receipts_c" t-att-state="item2[1]" to="1">
+                                            <span class="spnex">Incomming</span> <i class="fa fa-arrow-down"/>
+                                            <h4 class="mb-sm"><t t-esc="item2[0]"/></h4>
+                                        </a>
+                                    </t>
+                                    <strong class="text-muted"><t t-esc="item[2]"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+        
+        <t t-call="tms.tms_dashboard_trips"/>
+        </div>
+    </template>
+    
+    <template id="tms_dashboard_commision_progress">
+        <a class="dash-progress dash-heading" id="show-poup" title="Branch and user sales info">Sales Info
+            <div class="progress">
+              <div t-att-class="'progress-bar ' + commission['class']" role="progressbar" 
+              t-att-style="'width:'+str(commission['progress'])+'%'"><t t-esc="commission['percent']"/>%</div>
+            </div>
+        </a>
+        <div class="hidden" id="popover-progress">
+            <table class="table table-bordered commission-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Receipts</th>
+                        <th>Itrans</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="4" class="text-center">Branch Sales</td>
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td><t t-esc="commission['rcount']"/></td>
+                    <td><t t-esc="commission['icount']"/></td>
+                    <td><t t-esc="commission['branch_count']"/></td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td><t t-esc="commission['ramount']"/></td>
+                    <td><t t-esc="commission['iamount']"/></td>
+                    <td><t t-esc="commission['branch_amount']"/></td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-center">My Sales</td>
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td><t t-esc="commission['urcount']"/></td>
+                    <td><t t-esc="commission['uicount']"/></td>
+                    <td><t t-esc="commission['user_count']"/></td>
+                </tr>
+                <tr>
+                    <td>Amount</td>
+                    <td><t t-esc="commission['uramount']"/></td>
+                    <td><t t-esc="commission['uiamount']"/></td>
+                    <td><t t-esc="commission['user_amount']"/></td>
+                </tr>
+                </tbody>
+            </table>
+            <h4>Minimum Target: <t t-esc="commission['target']"/></h4>
+        </div>
+    </template>
+    
+    <record id="action_tms_dashboard_client" model="ir.actions.client">
+        <field name="name">TMS Dashboard</field>
+        <field name="tag">tms_dashboard</field>
+        <field name="context" eval="{'model': 'tms.dashboard'}" />
+    </record>
+     
+    
+</odoo>

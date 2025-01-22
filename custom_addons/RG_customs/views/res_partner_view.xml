@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_commercial_registration" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.commercial.registration</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="commercial_registration"/>
+            </xpath>
+        </field>
+    </record>
+    <!--
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+
+                     <group col="2">
+                         <field name="is_customer"/>
+                         <field name="is_vendor"/>
+                     </group>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_customers" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_customer', '=', True)]</field>
+        <field name="context">{'default_is_customer': True}</field>
+    </record>
+
+    <record id="action_vendors" model="ir.actions.act_window">
+        <field name="name">Vendors</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_vendor', '=', True)]</field>
+        <field name="context">{'default_is_vendor': True}</field>
+    </record>
+
+    <menuitem id="menu_customers" name="Customers" action="action_customers" parent="contacts.menu_contacts"/>
+    <menuitem id="menu_vendors" name="Vendors" action="action_vendors" parent="contacts.menu_contacts"/>
+
+    -->
+
+
+
+
+
+</odoo>

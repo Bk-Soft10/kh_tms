@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_account_bank_statement_tree_custom" model="ir.ui.view">
+        <field name="name">account.bank.statement.tree.custom</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button name="action_open_related_account_move" type="object" icon="fa-external-link" title="View Journal Entry"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

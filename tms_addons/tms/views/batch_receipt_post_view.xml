@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_tms_batch_receipt_post_from" model="ir.ui.view">
+            <field name="name">tms.batch.receipt.post.form</field>
+            <field name="model">tms.batch.receipt.post</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Batch Post">
+                    <field name="id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="branch_id" invisible="1"/>
+                    <field name="is_comp" invisible="1"/>
+                    <header>
+                        <button name="action_post" string="Validate" type="object" class="oe_highlight" invisible="state == 'p' or id == False" />
+                        <button name="action_recompute" string="Recompute" type="object" class="oe_highlight" invisible="state == 'p' or id == False" />
+                        <button name="action_print_report" string="Print" type="object" class="oe_highlight"/>
+                        <button name="action_select_receipts" string="Select Receipts" type="object" class="oe_highlight" invisible="state == 'p' or id == False" />
+                        <field name="state" nolabel="1" statusbar_visible="d,p" widget="statusbar"/>
+                    </header>
+                    <sheet string="Batch Print">
+                        <group class="nomrh">
+                            <group>
+                                <field name="partner_id" options="{'no_create': true, 'no_open': true}"/>
+                            </group>
+                            <group>
+                                <field name="journal_id" widget="selection" required="is_comp == False" />
+                            </group>
+                        </group> 
+                        <separator colspan="4" string="Receiver"/>   
+                        <group class="nomrh">
+                            <group>
+                                <field name="resv2_id"/>
+                                <field name="resv2_mobile"/>
+                            </group>
+                            <group>
+                                <field name="resv2_name"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <field name="receipt_id" string="Receipt" placeholder="Enter barcode or the receipt number" widget="barcode"
+                             invisible="state == 'p' or id == False" />
+                        </group>
+                        
+                        <notebook>
+                            <page string="Receipts">
+                                <group>
+                                    <div class="oe_edit_only">
+                                        <button name="action_down_receipts" type="object" string="(Down The Receipts)" class="oe_link" invisible="state == 'p'" />
+                                    </div>
+                                </group>
+                                <!-- <group> -->
+                                    <div>
+                                        <field name="post_line_ids" nolable="1" readonly="state == 'p'" >
+                                            <tree editable="bottom" create="0">
+                                                <field name="receipt_id" invisible="1" force_save="1"/>
+                                                <field name="receipt_no" readonly="1"/>
+                                                <field name="car_id" readonly="1"/>
+                                                <field name="car_model" readonly="1"/>
+                                                <field name="amount_total" readonly="1"/>
+                                                <field name="residual" readonly="1"/>
+                                                
+                                                <field name="amount" readonly="residual == 0 or parent.journal_id == False" />
+                                            </tree>
+                                        </field>
+                                    </div>
+                                <!-- </group> -->
+                            </page>
+                        </notebook>
+                   </sheet>
+               </form>
+            </field>
+        </record>
+        
+        <record id="view_tms_batch_receipt_post_tree" model="ir.ui.view">
+            <field name="name">Batch Receipts Post </field>
+            <field name="model">tms.batch.receipt.post</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Batch Post">
+                    <field name="batch_no"/>
+                    <field name="branch_id"/>
+                    <field name="partner_id"/>
+                    <field name="resv2_name"/>
+                    <field name="resv2_mobile"/>
+                    <field name="create_date" widget="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_batch_post_filter" model="ir.ui.view">
+            <field name="name">tms.batch.post.filter</field>
+            <field name="model">tms.batch.receipt.post</field>
+            <field name="arch" type="xml">
+                <search string="Search Batch Post">
+                    <field name="batch_no" string="Number" filter_domain="[('batch_no','=',self)]"/>
+                    <field name="partner_id" string="Partner" filter_domain="[('partner_id','ilike',self)]"/>
+                    <field name="branch_id" string="Branch" filter_domain="[('branch_id','ilike',self)]"/>
+                    <field name="resv2_name" string="Receiver" filter_domain="[('resv2_name','ilike',self), ('resv2_mobile','ilike',self)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Branch" name="branch_id" context="{'group_by':'branch_id'}"/>
+                        <filter string="partner_id" name="partner_id" context="{'group_by':'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_tms_batch_receipt_post" model="ir.actions.act_window">
+            <field name="name">Batch Receipts Post </field>
+            <field name="res_model">tms.batch.receipt.post</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'current': True}</field>
+            <field name="search_view_id" ref="view_tms_batch_post_filter"/>
+            <field name="view_id" ref="view_tms_batch_receipt_post_tree"/>
+        </record>
+        
+        
+        <record id="view_tms_batch_receipt_post_selector" model="ir.ui.view">
+            <field name="name">View Batch Post Selector</field>
+            <field name="model">tms.batch.receipt.post.selector</field>
+            <field name="arch" type="xml">
+                <form string="Batch Post Selector">
+                    
+                    <group colspan="8" >
+                        <separator string="Receipts" colspan="8"/>
+                        <newline/>
+                        <field name="receipt_ids" nolabel="1" context="{'selector': True}" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="select_receipts" string="Insert" type="object" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_tms_batch_receipt_post_selector" model="ir.actions.act_window">
+            <field name="name">Batch Receipt Selector</field>
+            <field name="res_model">tms.batch.receipt.post.selector</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_trip_receipt_by_branch"/>
+            <field name="target">new</field>
+        </record>
+        
+</odoo>

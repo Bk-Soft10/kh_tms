@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_partner_tms_price_list_form" model="ir.ui.view">
+            <field name="name">res.partner.tms.price.list.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="priority">2</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <!-- <field name="groups_id" eval="[(4, ref('tms.group_tms_price_manager'))]"/> -->
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Fright Price List" name="tms_price_list" invisible="is_company == False">
+                        <group>
+                            <group>
+                                <field name="use_contract"/>
+                            </group>
+                            <group>
+                                <field name="pay_branch_id"/>
+                            </group>
+                        </group>
+                        <field colspan="4" mode="tree" name="tms_price_list_ids">
+                            <tree editable="bottom" string="Details">
+                                <field name="city_from_id"/>
+                                <field name="city_to_id"/>
+                                <field name="freight_state_id"/>
+                                <field name="price"/>
+                                <field name="with_tax"/>
+                                <field name="deal"/>
+                                <field name="deal_used"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_partner_tms_partner_others" model="ir.ui.view">
+            <field name="name">res.partner.tms.others.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button type="object" class="oe_stat_button" icon="fa-car" name="action_view_partner_receipts"
+                        invisible="receipt_count == 0" >
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="receipt_count"/>
+                            </span>
+                            <span class="o_stat_text">Receipts</span>
+                        </div>
+                    </button>
+                    <button type="object" class="oe_stat_button" icon="fa-car" name="action_view_partner_itrans"
+                        invisible="itrans_count == 0">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="itrans_count"/>
+                            </span>
+                            <span class="o_stat_text">Itrans</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="oe_title mb24" position="inside">
+                    <field name="ssn" placeholder="Partner Id"/>
+                </div>
+                <xpath expr="//field[@name='lang']" position="after">
+                    <field name="tax_license"/>
+                </xpath>
+                <group name="purchase" position="after">
+                    <group name="tansport" string="Tansport">
+                        <field name="shipper_type" />
+                        <field name="is_blocked" />
+                        <field name="employee" />
+                    </group>
+                </group>
+            </field>
+        </record>
+        
+        <record id="view_partner_property_tms_form" model="ir.ui.view">
+            <field name="name">res.partner.property.tms.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='sale']" position="inside">
+                    <field name="allow_debit"/>
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <record id="view_res_partner_quick_create" model="ir.ui.view">
+            <field name="name">res.partner.quick</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Quick Create Customer">
+                    <sheet string="Company Receipt">
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="ssn" required="1"/>
+                                <field name="mobile" required="1"/>
+                                <field name="country_id" required="1" options="{'no_create': true, 'no_open': true}"/>
+                                <field name="email"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+    <record id="view_res_partner_partner_tms_filter" model="ir.ui.view">
+        <field name="name">Partner Filter</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+              <filter name="type_person" position="replace">
+                <filter string="Persons" name="type_person" domain="[('is_company','=',0), ('shipper_type','!=',1)]"/>
+              </filter>
+              <filter name="type_company" position="replace">
+                  <filter string="Companies" name="type_company" domain="[('is_company','=',1), ('shipper_type','!=',1)]"/>
+                  <filter string="Individual" name="type_is_trans" domain="[('shipper_type','=',1)]"/>
+              </filter>
+        </field>
+    </record>
+    
+</odoo>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="Radioactive_template">
+     <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.basic_layout">
+
+         <!--- script -->
+               <!-- Styling Section -->
+            <style>
+
+                .invoice-header, .client-info, .invoice-details, .total-section, .payment-terms {
+                    width: 100%;
+                    margin-bottom: 20px;
+                     font-family: 'Segoe UI', sans-serif;
+                }
+                .div-info {
+                     display: flex; align-items: center;
+                }
+                .company-info {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                }
+                .company-logo img {
+                    max-height: 60px;
+                    width: 50px;
+                    height : 50px;
+                    padding-left: 80px;
+
+                }
+                .company-contact {
+                    padding-right: 300px;
+                    text-align: right;
+                    font-size: 12px;
+                }
+                .company-contact p {
+                    margin: 0;
+                    line-height: 1.4;
+                }
+                .company-contact i {
+                    margin-right: 5px;
+                    color: #333;
+                }
+                .client-info p, .invoice-details p {
+                    margin: 0;
+                    font-size: 15px;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+                .invoice-details {
+                    background-color: #FFFFFF;
+                    padding: 10px;
+                font-family: 'Segoe UI', sans-serif;
+                }
+                .invoice-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 12px;
+                }
+                .invoice-table th, .invoice-table td {
+
+                    padding: 8px;
+                    text-align: center;
+                }
+                .invoice-table th {
+                    background-color: #FFFFFF;
+                    color: #000000;
+                    font-size: 16px;
+                   font-family: 'Segoe UI', sans-serif;
+                }
+                .invoice-table td {
+                    color: #333;
+                   font-size: 16px;
+                   font-family: 'Segoe UI', sans-serif;
+                }
+                .total-section p, .payment-terms p {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    text-align: right;
+                }
+                .grand-total {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                .payment-terms {
+                    border-top: 1px solid #ddd;
+                    padding-top: 10px;
+                    font-size: 12px;
+                }
+                .hr {
+                    padding: 5px;
+                    border-bottom: 2px solid #000;
+                }
+
+                .invoice-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+                font-family: 'Segoe UI', sans-serif;}
+
+.to-client {
+    font-size: 12px;
+    line-height: 1.6;
+    width: 40%;
+}
+
+.to-client h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.to-client p {
+    margin: 0;
+}
+
+.invoice-info {
+    width: 55%;
+    text-align: right;
+    font-size: 12px;
+}
+
+.invoice-date table {
+    width: 100%;
+    border-collapse: collapse;
+}
+                .section-date  {
+    padding: 5px;
+    border-bottom: 2px solid #000; /* Black underline for invoice details */
+                text-align: right;
+}
+
+.invoice-date  {
+    padding: 5px;
+    border-bottom: 2px solid #000; /* Black underline for invoice details */
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.invoice-date strong {
+    font-size: 15px;
+    color: black;
+                font-family: 'Segoe UI', sans-serif;
+}
+                .th-border-black {
+                 border: 1px solid black; /* Black border */
+                 background-color: #000;
+                 color: white;              /* White text */
+                 text-align: center;        /* Centered text */
+                padding: 8px;
+                width: 50%; /* Left column takes 50% */
+
+                 font-family: 'Segoe UI', sans-serif;
+                font-size: 15px;
+}
+                  .th-border-gray {
+                 background-color: #f2f2f2;
+                width: 50%; /* Left column takes 50% */
+                 text-align: left;
+
+}
+                .left-column {
+                 width: 50%; /* Left column takes 50% */
+                 text-align: left;
+}
+
+                 .right-column {
+                 width: 50%; /* Right column takes 50% */
+                    text-align: right;
+}
+            .contact-container {
+    display: flex;
+    align-items: flex-start;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.vl {
+    border-left: 6px solid #d8a73d; /* Gold color */
+    height: 90px;
+    margin-right: 10px;
+}
+
+.contact-info {
+    color: #333; font-family: 'Segoe UI', sans-serif;
+}
+
+.contact-info p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    line-height: 1.6; font-family: 'Segoe UI', sans-serif;
+                font-size: 15px;
+}
+
+.contact-info i {
+    margin-right: 8px;
+
+}
+
+
+.separator {
+    border: none;
+    border-top: 1px solid black;
+    margin: 10px 0;
+}
+
+
+
+
+
+
+
+            </style>
+
+            <div class="header">
+        <div class="row">
+
+                     <div class="row mt32 mb32">
+                         <div class="col-5">
+                           <div style=" width: 100%;
+                                  margin-bottom: 10px;
+                     font-family: 'Segoe UI', sans-serif;font-size: 13px;">
+                        <!-- Company Logo -->
+                                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"  alt="Company Logo"/>
+
+                     </div>
+
+                         </div>
+                         <div class="col-7">
+                             <div class="contact-container">
+                                  <div class="row mt32 mb32">
+                                      <div class="col-1">
+    <div style=" border-left: 6px solid #5CE65C; /* Gold color */
+    height: 120px;
+    margin-right: 10px;"></div> <!-- Vertical line -->
+                      </div>
+                <div class="col-12">
+     <div style="color: #333; font-family: 'Segoe UI', sans-serif;font-size: 13px;">
+        <p style="margin: 0; padding: 0;"><strong t-esc="doc.company_id.name" /></p>
+        <p style="margin: 0; padding: 0;"><i class="fa fa-phone"></i> <span t-esc="doc.company_id.phone" /></p>
+        <p style="margin: 0; padding: 0;"><i class="fa fa-envelope"></i> <span t-esc="doc.company_id.email" /></p>
+        <p style="margin: 0; padding: 0;"><i class="fa fa-globe"></i> <span t-esc="doc.company_id.website" /></p>
+        <div style="height: 1px; background-color: black; border: none; margin: 10px 0;" />
+        <p style="margin: 0; padding: 0;"><i class="fa fa-map-marker"></i> <span t-esc="doc.company_id.street" />, <span t-esc="doc.company_id.city" />, <span t-esc="doc.company_id.country_id.name" /></p>
+    </div>
+                </div>
+                                  </div>
+</div>
+
+                             <!--
+                             <div class="col-3">
+                                   <div class="vl"></div>
+                             </div>
+                             <div class="col-6">
+                                   <div>
+                         <p>
+                        <p><strong t-esc="doc.company_id.name" /></p>
+                        <p><i class="fa fa-phone"></i> <span t-esc="doc.company_id.phone" /></p>
+                        <p><i class="fa fa-envelope"></i> <span t-esc="doc.company_id.email" /></p>
+                        <p><i class="fa fa-globe"></i> <span t-esc="doc.company_id.website" /></p>
+                           <hr style="border: 1px solid black;" />
+                        <p><i class="fa fa-map-marker"></i> <span t-esc="doc.company_id.street" />, <span t-esc="doc.company_id.city" />, <span t-esc="doc.company_id.country_id.name" /></p>
+                        </p>
+                       </div>
+                             </div>
+
+                             -->
+<!--
+                              <div class="invoice-details">
+
+                <div class="invoice-date">
+                    <div class="div-info">
+                    <div class="vl"></div>
+
+                       <div>
+                         <p>
+                        <p><strong t-esc="doc.company_id.name" /></p>
+                        <p><i class="fa fa-phone"></i> <span t-esc="doc.company_id.phone" /></p>
+                        <p><i class="fa fa-envelope"></i> <span t-esc="doc.company_id.email" /></p>
+                        <p><i class="fa fa-globe"></i> <span t-esc="doc.company_id.website" /></p>
+                           <hr style="border: 1px solid black;" />
+                        <p><i class="fa fa-map-marker"></i> <span t-esc="doc.company_id.street" />, <span t-esc="doc.company_id.city" />, <span t-esc="doc.company_id.country_id.name" /></p>
+                        </p>
+                       </div>
+                    </div>
+                    </div>
+                </div>
+ -->
+                         </div>
+                     </div>
+
+        </div>
+            </div>
+             <br></br>
+                 <br></br>
+                 <div class="page">
+
+
+                     <div class="row mt32 mb32">
+                      <div class="col-6">
+
+            <div class="client-info">
+                <p><strong>To:</strong> </p>
+                <p><span t-esc="doc.partner_id.name" style="font-size: 40px;" /></p>
+
+                <p><strong>P.</strong> <span t-esc="doc.partner_id.phone" /></p>
+                <p><strong>W.</strong> <span t-esc="doc.partner_id.email" /></p>
+                <p><strong>A.</strong> <span t-esc="doc.partner_id.street" />, <span t-esc="doc.partner_id.city" />, <span t-esc="doc.partner_id.zip" />, <span t-esc="doc.partner_id.country_id.name" /></p>
+            </div>
+
+                      </div>
+                          <div class="col-6">
+                                <!-- Invoice Details -->
+
+                              <table style="width: 100%; direction: rtl; text-align: center;font-size: 13px;font-family: 'Segoe UI', sans-serif; border-collapse: separate;border-spacing: 10px;">
+                <thead>
+                    <tr>
+                        <th class="th-border-black">الفاتوره</th>
+                        <th class="th-border-gray"> </th>
+
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="invoice-date">تاريخ الفاتوره</td>
+                    <td class="invoice-date">رقم الفاتوره   </td>
+                </tr>
+                <tr>
+                    <td class="invoice-date"><span t-esc="doc.invoice_date" /></td>
+                    <td class="invoice-date"> <span t-esc="doc.name" /></td>
+                </tr>
+                <tr>
+                    <td class="invoice-date">تاريخ الإصدار</td>
+                    <td class="invoice-date">المجموع المستحق</td>
+                 </tr>
+                <tr>
+                    <td class="invoice-date"><span t-esc="doc.invoice_date" /></td>
+                      <td class="invoice-date"> <span t-esc="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                </tr>
+            </table>
+
+                          </div>
+                     </div>
+
+                      <hr class="invoice-date"></hr>
+
+
+            <!-- Invoice Table -->
+            <table class="invoice-table">
+                <thead>
+                    <tr class="invoice-date">
+                        <th>المبلغ</th>
+                        <th>الضرائب</th>
+                        <th>سعر الوحدة</th>
+                        <th>الكمية</th>
+                        <th>الوصف</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                        <tr class="invoice-date">
+                            <td><span t-esc="line.price_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                            <td><span t-esc="line.tax_ids[0].amount" />%</td>
+                            <td><span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                            <td><span t-esc="line.quantity" /></td>
+                            <td><span t-esc="line.product_id.display_name" /><br/><small t-esc="line.name" /></td>
+                         </tr>
+                    </t>
+                </tbody>
+            </table>
+
+                   <div class="row mt32 mb32">
+                         <div class="col-5">
+                             <div class="client-info">
+                             <p><strong>Terms and Condition/Notes:</strong></p>
+                             <p>Please use the following communication for your payment:</p>
+                             <p><span t-esc="doc.name" /></p>
+                             <p><strong>Payment Terms:</strong><span t-esc="doc.invoice_payment_term_id.name" /></p>
+                             </div>
+
+                         </div>
+                         <div class="col-3"></div>
+                        <div class="col-4">
+                               <!-- Total Section -->
+            <div class="total-section">
+             <table>
+                <tr>
+                    <td class="section-date"><span t-esc="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                    <td class="section-date"> :الإجمالي الفرعي</td>
+                 </tr>
+                <tr>
+                    <td class="section-date"><span t-esc="doc.amount_tax" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                    <td class="section-date"> :  ضريبة القيمة المضافة </td>
+                  </tr>
+                <tr>
+                    <td class="section-date"><span t-esc="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' /></td>
+                    <td class="section-date"> : الإجمالي الكلي  </td>
+
+                 </tr>
+            </table>
+            </div>
+
+                           </div>
+                     </div>
+<div class="footer">
+                   <div style="border-top: 4px solid #5CE65C; margin-top: 20px; width: 100%;"></div>
+</div>
+        </div>
+
+    </t>
+</t>
+
+    </t>
+
+</template>
+
+
+
+
+
+
+</odoo>

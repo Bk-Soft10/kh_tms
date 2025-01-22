@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="view_tms_trip_form" model="ir.ui.view">
+            <field name="name">tms.trip.form</field>
+            <field name="model">tms.trip</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Trip">
+                    <field name="id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="can_arrive" invisible="1"/>
+                    <field name="can_takeoff" invisible="1"/>
+                    <field name="can_stop_trip" invisible="1"/>
+                    <field name="can_cancel_trip" invisible="1"/>
+                    <field name="can_upload" invisible="1"/>
+                    <field name="can_untakeoff" invisible="1"/>
+                    <field name="show_activity" invisible="1"/> 
+                    <field name="is_internal" invisible="1"/> 
+                    
+                    <header>
+                        <button name="action_cancel_trip" string="Cancel Trip" type="object" invisible="can_cancel_trip == False"  confirm="Are you sure you want to cancel trip?"/>
+                        <button name="action_select_receipts" string="Upload Receipts" type="object" class="oe_highlight" invisible="can_upload == False"/>
+                        <button name="action_takeoff"  string="Takeoff" type="object" class="oe_highlight" invisible="can_takeoff == False" confirm="Are you sure you want to tickoff?"/>
+                        <button name="action_arrival" string="Arrival" type="object" class="oe_highlight" invisible="can_arrive == False"  confirm="Are you sure you want to make trip in arrival?"/>
+                        <button name="action_stop_trip" string="Stop" type="object" invisible="can_stop_trip == False"/>
+                        <button name="action_untakeoff" string="Cancel Takeoff" type="object" class="oe_highlight" invisible="can_untakeoff == False"  confirm="Are you sure you want to untickoff?"/>
+                        <field name="state" nolabel="1"
+                            statusbar_visible="e,c" widget="statusbar" invisible="state not in ('e', 'c')" />
+                        <field name="state" nolabel="1"
+                            statusbar_visible="b,r,t,a" widget="statusbar" invisible="state not in  ('b','r', 't', 'a')" />
+                        
+                    </header>
+                    <sheet string="Trip">
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" string="Print Route" icon="fa-print" name="%(action_report_trip)d"   type="action" invisible="state != 'b'" />
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="trip_no"/>
+                            </h1>
+                        </div>
+                        <group class="nomrh">
+                            <group invisible="is_internal == False and state != 'b'" ><field name="is_internal"  readonly="state != 'b'" /></group>
+                            <group invisible="is_internal == False and state != 'b'"><field name="internal_type" widget="radio" options="{'horizontal': true}" invisible="is_internal == False" /></group>
+                            <group><field name="city_id" /></group>
+                            <group><field name="branch_id"/></group>
+                            <group invisible="is_internal == True"><field name="city_to_id" readonly="0" /></group>
+                            <group invisible="is_internal == True" ><field name="branch_to_id" readonly="0" /></group>
+                            <group><field name="departure_date"/></group>
+                            <group><field name="last_departure_date"/></group>
+                            <group><field name="expected_arrival" readonly="1" force_save="1"/></group>
+                            <group><field name="duration" readonly="0" force_save="1"/></group>
+                            <group><field name="distance" readonly="1" force_save="1"/></group>
+                            <group><field name="arrival_date" readonly="1"/></group>
+                            <group><field name="arrival_date" readonly="1"/></group>
+                            <group><field name="create_date" readonly="1"/></group> 
+                            <group><field name="car_count" readonly="1"/></group> 
+                            <group><field name="cur_branch_id" readonly="1"/></group>   
+                        </group>
+                        <separator colspan="4" string="Recipient Details" invisible="is_internal == False or internal_type!='2' "/>
+                        <group class="nomrh" invisible="is_internal == False or internal_type != '2'">
+                            <field name="partner_id" required="internal_type == '2'" />
+                            <field name="resv2_name" required="internal_type =='2'" />
+                            <field name="resv2_id" required="internal_type =='2'"/>
+                            <field name="resv2_mobile" required="internal_type =='2'"/>
+                        </group>
+                        
+                        <group>
+                            <field name="note"/>
+                        </group>
+                            <div><field name="routes_html" widget="html" force_save="1" readonly="1"/></div>
+                        <notebook>
+                            <page string="Truck Info">
+                                <group>
+                                    <group>
+                                        <field name="truck_id"  readonly="0" domain="[('city_id', '=', city_id), ('active_trip_id', '=', False), ('driver_id', '!=', False)]"
+                                         context="{'show_driver': True}" options="{'no_create': true, 'no_open': true}"/>
+                                        <field name="driver_expense" readonly="0" />
+                                        <field name="other_expense"/>
+                                        <field name="emove_id" readonly="1" groups="account.group_account_user"/>
+                                    </group>
+                                    <group>
+                                        <label for="driver"/>
+                                        <div class="o_row">
+                                            <field name="driver_mobile"/>
+                                            <field name="driver"/>
+                                            <field name="plate_no"/>
+                                        </div>
+                                        <field name="rent_expense"/>
+                                        <field name="total_expense" force_save="1"/>
+                                        <field name="amove_id" readonly="1" groups="account.group_account_user"/>
+                                    </group>
+                                </group>
+                                <group invisible="is_internal == True" >
+                                    <field name="trip_route_ids" nolabel="1" widget="one2many_list">
+                                        <tree string="Trip Routes">
+                                            <field name="sequence"  align="left"/>
+                                            <field name="branch_to_id"/>
+                                            <field name="departure_date"/>
+                                            <field name="arrival_date"/>
+                                            <field name="expected_arrival"/>
+                                            <field name="distance"/>
+                                            <field name="duration"/>
+                                            <field name="last_departure_date"/>
+                                            <button name="action_print_receipt_route" type="object" icon="fa-print" invisible="departure_date == False" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Active Receipts">
+                                <field name="receipt_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="car_id"/>
+                                        <field name="branch_to_id"/>
+                                        <field name="can_downoad" column_invisible="1"/>
+                                            <button name="action_downoad" icon="fa fa-download" string="Down" type="object" invisible="can_downoad == False"
+                                             />
+                                    </tree>
+                                </field>
+                                <!-- <group>
+                                    <field name="receipt_route_active_ids" edit="0" nolabel="1">
+                                        <tree string="Trip Routes">
+                                            <button  icon="fa-credit-card" name="open_receipt_form" type="object"/>
+                                            <field name="receipt_id"/>
+                                            <field name="branch_to_id"/>
+                                            <field name="trip_route_id"/>
+                                            <field name="up_date"/>
+                                            <field name="can_downoad" invisible="1"/>
+                                            <button name="action_downoad" icon="fa fa-download" string="Down" type="object" invisible="can_downoad == False"
+                                             />
+                                        </tree>
+                                    </field>
+                                </group> -->
+                            </page>
+                            
+                            <page string="All Receipts">
+                                    <field name="all_receipt_route_ids" edit="0" nolabel="1">
+                                        <tree string="Trip Routes">
+                                            <button  icon="fa-credit-card" name="open_receipt_form" type="object"/>
+                                            <field name="receipt_id"/>
+                                            <field name="route_branch_id"/>
+                                            <field name="route_branch_to_id"/>
+                                            <field name="cur_branch_id"/>
+                                            <field name="receipt_state"/>
+                                            <field name="up_date"/>
+                                            <field name="down_date"/>
+                                            <field name="amount"/>
+                                        </tree>
+                                    </field>
+                            </page>
+                        </notebook>
+                        <field name="create_uid" class="pull-right" readonly="1" string="Created By"/>
+                    </sheet>
+                    <div groups="tms.group_tms_show_activity">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="activity_ids" widget="mail_activity"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_tms_trip_tree" model="ir.ui.view">
+            <field name="name">tms.trip.tree</field>
+            <field name="model">tms.trip</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Trip">
+                    <field name="trip_no"/>
+                    <field name="branch_id"/>
+                    <field name="branch_to_id"/>
+                    <field name="truck_id"/>
+                    <field name="driver"/>
+                    <field name="departure_date" widget="date"/>
+                    <field name="routes_text" string="Routes"/>
+                    <field name="car_count"/>
+                    <field name="state"/>
+                    <button class="oe_stat_button" string="Print Route" icon="fa-print" name="%(action_report_trip)d"   type="action" invisible="state != 'b'" />
+
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_trip_filter" model="ir.ui.view">
+            <field name="name">tms.trip.select</field>
+            <field name="model">tms.trip</field>
+            <field name="arch" type="xml">
+                <search string="Search Trips">
+                    <field name="trip_no" string="Trip Number" filter_domain="[('trip_no','=',self)]"/>
+                    <field name="driver_id" string="Driver" filter_domain="[('driver_id','=',self)]"/>
+                    <separator/>
+                    <filter name="x1" string="Branch" domain="[('state','=','b')]" help="In Branch"/>
+                    <filter name="x2" string="Road" domain="[('state','=','r')]" help="In Road"/>
+                    <filter name="x3" string="Transient" domain="[('state','=','t')]" help="In Transient"/>
+                    <filter name="x4" string="Arrival" domain="[('state','=','a')]"/>
+                    <filter name="x5" string="Ended" domain="[('state','=','e')]"/>
+                    <separator/>
+                    <filter name="x6" string="Departure 24H" domain="[('departure_date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d') )]"/>
+                    <filter name="x7" string="Departure 7 Daya" domain="[('departure_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d') )]"/>
+                    <filter  string="Departure 30 Daya" name="departur_30_days" domain="[('departure_date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d') )]"/>
+                    <separator/>
+                    <filter name="x9" string="Arrival 24H" domain="[('arrival_date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d') ), ('state','=','a')]"/>
+                    <filter name="x10" string="Arrival 7 Daya" domain="[('arrival_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('state','=','a')]"/>
+                    <filter name="arrival_30_days" string="Arrival 30 Daya" domain="[('arrival_date', '&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('state','=','a')]"/>
+                    <separator/>
+                    <field name="city_id"/>
+                    <field name="city_to_id"/>
+                    <field name="vehicle_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trucks" name="vehicle_id" context="{'group_by':'vehicle_id'}"/>
+                        <filter string="From City" name="city_id" context="{'group_by':'city_id'}"/>
+                        <filter string="To City" name="city_to_id" context="{'group_by':'city_to_id'}"/>
+                        <filter string="States" name="state" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_tms_trip" model="ir.actions.act_window">
+            <field name="name">TMS Trips</field>
+            <field name="res_model">tms.trip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_trip_tree"/>
+            <field name="search_view_id" ref="view_tms_trip_filter"/>
+            <field name="context">{'current': True}</field>
+        </record>
+        
+        <record id="action_tms_all_trip" model="ir.actions.act_window">
+            <field name="name">TMS All Trips</field>
+            <field name="res_model">tms.trip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_trip_tree"/>
+            <field name="search_view_id" ref="view_tms_trip_filter"/>
+        </record>
+        
+        <record id="action_tms_trip_trucks" model="ir.actions.act_window">
+            <field name="name">TMS Trip</field>
+            <field name="res_model">tms.trip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tms_trip_tree"/>
+            <field name="search_view_id" ref="view_tms_trip_filter"/>
+            <!-- <field name="periority">99</field> -->
+        </record>
+                
+        <record id="view_tms_trip_route_form" model="ir.ui.view">
+            <field name="name">tms.trip.route.form</field>
+            <field name="model">tms.trip.route</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="TMS Trip Route">
+                    <sheet string="Trip Route">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sequence" readonly="1"  force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="city_id" readonly="1"  force_save="1"/>
+                                <field name="city_to_id"/>
+                                <field name="departure_date" readonly="1"/>
+                                <field name="expected_arrival" readonly="1"  force_save="1"/>
+                                <field name="arrival_date"/>
+                            </group>
+                            <group>
+                                <field name="branch_id" readonly="1"  force_save="1"/>
+                                <field name="branch_to_id" readonly="arrival_date != False" />
+                                <field name="distance" readonly="1"  force_save="1"/>
+                                <field name="duration" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_tms_receipt_trip_route_tree" model="ir.ui.view">
+            <field name="name">tms.receipt.route.tree</field>
+            <field name="model">tms.receipt.route</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="TMS Trip">
+                    <field name="receipt_id"/>
+                    <field name="branch_id"/>
+                    <field name="route_branch_id"/>
+                    <field name="departure_date"/>
+                    <field name="arrival_date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tms_trip_stop_wizard" model="ir.ui.view">
+            <field name="name">Trip Stop Wizar</field>
+            <field name="model">tms.trip.stop.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <div></div>
+                    </group>
+                    <group>
+                        <field name="branch_id"/>
+                    </group>
+                    <footer>
+                        <button name="action_stop_trip" string="Stop Trip" type="object" class="oe_highlight"/> 
+                        <button string="Cancel" data-dismiss="modal" class="btn-default" special="cancel"/>   
+                    </footer>
+               </form>
+            </field>
+        </record>
+        
+    <record id="view_tms_trip_branch_pivot" model="ir.ui.view">
+        <field name="name">tms.trip.branch.pivot</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <pivot string="trips">
+                <field name="branch_id" type="row"/>
+                <field name="departure_date" type="col"/>
+                <field name="driver_expense" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+            
+    <record id="action_tms_trip_branch_pivot" model="ir.actions.act_window">
+        <field name="name">Trip Analysis</field>
+        <field name="res_model">tms.trip</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_tms_trip_branch_pivot"/>
+        <field name="search_view_id" ref="tms.view_tms_trip_filter"/>
+        <field name="domain">[('state','!=', 'c')]</field>
+        <field name="context">{'search_default_departur_30_days':'1', 'search_default_group_city_id':1}</field>
+    </record>
+        
+</odoo>

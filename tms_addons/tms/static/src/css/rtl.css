@@ -1,0 +1,8 @@
+.rtl {
+direction:rtl
+}
+
+.rtl .text-right{
+ text-align: left !important;
+}
+

@@ -80,7 +80,9 @@ class AccountMoveInherit(models.Model):
     @api.depends('amount_total_signed', 'amount_tax_signed', 'custom_confirmation_datetime', 'company_id', 'company_id.vat')
     def _compute_qr_code_custom(self):
         for rec in self:
-            rec.custom_qr_code_str = rec._calculate_custom_qr_code_str()
+            qr_code_str = rec._calculate_custom_qr_code_str()
+            _logger.info(qr_code_str)
+            rec.custom_qr_code_str = qr_code_str
 
     def _calculate_custom_qr_code_str(self):
         def get_qr_encoding(tag, field):
@@ -101,7 +103,10 @@ class AccountMoveInherit(models.Model):
             total_vat_enc = get_qr_encoding(5, float_repr(abs(record.amount_tax_signed), 2))
 
             str_to_encode = seller_name_enc + company_vat_enc + timestamp_enc + invoice_total_enc + total_vat_enc
+            _logger.info(str_to_encode)
             qr_code_str = base64.b64encode(str_to_encode).decode()
+            _logger.info("qr_code_str qr_code_str")
+            _logger.info(qr_code_str)
         return qr_code_str
 
     # @api.depends('amount_total_signed', 'amount_tax_signed', 'custom_confirmation_datetime', 'company_id', 'company_id.vat')

@@ -2,3 +2,4 @@ openpyxl
 ofxparse
 qifparse
 pyasyncore
+rl-renderPM

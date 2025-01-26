@@ -290,8 +290,9 @@
                          <div class="col-4"></div>
                          <div class="col-3">
                             <div  style="margin-top: -8pt; padding-left:30pt;">
-                                <img t-attf-src="data:image/png;base64, {{doc.qr}}"/>
-
+                                <img t-if="doc.l10n_sa_qr_code_str" style="display:block;"
+                                 t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', quote_plus(doc.l10n_sa_qr_code_str), 200, 200)"/>
+                                <img t-else="" t-attf-src="data:image/png;base64, {{doc.qr}}"/>
                             </div>
 
                          </div>

@@ -3,7 +3,7 @@
     'version': '17.0.1.0.1',
     'category': 'Account Report Management',
     'summary': 'Add Report account to account module',
-    'depends': ['account' , 'sale' ,'purchase'],
+    'depends': ['account' , 'sale' ,'purchase', 'l10n_sa'],
     'data': [
          'Reports/Radioactive_template.xml',
          'Reports/west_cost_template.xml',
